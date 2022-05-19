@@ -1,0 +1,1 @@
+// Get all posts in posts collection
