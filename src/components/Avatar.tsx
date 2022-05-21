@@ -4,7 +4,10 @@ interface AvatarProps {
   size?: 'small' | 'medium' | 'large'
   uri?: string
   top?: number
+  left?: number
+  right?: number
   bottom?: number
+  positon?: 'absolute' | 'relative'
 }
 
 const handleAvatarSize = (size: any) => {
@@ -18,12 +21,22 @@ const handleAvatarSize = (size: any) => {
 
 const Avatar = ({ 
   size = 'medium', 
-  uri = 'https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg', 
-  top = 0,
-  bottom = 0,
+  uri='https://i.pinimg.com/236x/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.jpg', 
+  top=0,
+  bottom=0,
+  left=0,
+  right=0,
+  positon='relative',
 }: AvatarProps) => {
   return(
-    <Container bottom={bottom} size={size} top={top}>
+    <Container 
+      size={size} 
+      top={top} 
+      bottom={bottom} 
+      left={left}
+      right={right}
+      positon={positon}
+    >
       <Img source={{ uri }} />
     </Container>
   )
@@ -36,6 +49,9 @@ const Container = styled.View<AvatarProps>`
   width: ${({ size }) => handleAvatarSize(size)}px;
   top: ${({ top }) => top}px;
   bottom: ${({ bottom }) => bottom}px;
+  left: ${({ left }) => left}px;
+  right: ${({ right }) => right}px;
+  position: ${({ positon }) => positon};
 `;
 
 const Img = styled.Image<AvatarProps>`
