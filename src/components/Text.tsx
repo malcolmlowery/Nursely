@@ -1,4 +1,5 @@
-import styled from 'styled-components/native';
+// This component needs to be refactored
+import { TextComponent } from 'react-native';
 import { ColorsI } from '../types/Colors.interface';
 
 interface TypographyProps {
@@ -19,12 +20,8 @@ const handleFontType = ({ fontType, fontWeight, color }: TypographyProps) => {
 
 const Text = ({ fontType, children }: TypographyProps) => {
   return(
-    <TextComp fontType={fontType}>{children}</TextComp>
+    <TextComponent style={{ fontSize: handleFontType(fontType) }}>{children}</TextComponent>
   )
 }
 
 export default Text;
-
-const TextComp = styled.Text<TypographyProps>`
-  ${({ fontType ='text' }) => handleFontType(fontType)}
-`;

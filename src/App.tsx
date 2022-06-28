@@ -1,36 +1,23 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Avatar from './components/Avatar';
-import Newsfeed from './screens/newsfeed';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const Stack = createNativeStackNavigator();;
+import Home from './screens/home';
+import Notifications from './screens/notifications';
+import Messages from './screens/messages';
+import Settings from './screens/settings';
 
-const headerBtn = () => {
-  return(
-    <Avatar 
-      size='large'
-      top={40}
-      uri='https://avatars.githubusercontent.com/u/100153203?s=400&u=2b1dee06b9230cca80480cbf7ecf0defc67aa414&v=4s'
-    />
-  )
-}
+const Tabs = createBottomTabNavigator();
 
 const App = () => {
   return(
-    <Stack.Navigator>
-      <Stack.Screen 
-        name='newsfeed' 
-        component={Newsfeed} 
-        options={{
-          title: 'Nursely',
-          headerTitleStyle: { 
-            color: '#131313'
-          },
-          headerLargeTitle: true,
-          headerShadowVisible: false,
-          headerRight: () => headerBtn()
-        }}
-      />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Tabs.Navigator>
+        <Tabs.Screen name='home' component={Home} options={{ headerShown: false }} />
+        <Tabs.Screen name='notifications' component={Notifications} />
+        <Tabs.Screen name='messages' component={Messages} />
+        <Tabs.Screen name='settings' component={Settings} />
+      </Tabs.Navigator>
+    </NavigationContainer>
   )
 };
 
