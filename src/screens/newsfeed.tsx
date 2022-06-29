@@ -1,37 +1,59 @@
-import { useState } from 'react';
 import styled from 'styled-components/native';
 import PostCard from '../components/PostCard';
 
 // User posts placeholder data
 import fakeData from '../data/fakeData.json';
 
-const Newsfeed = ({ navigation }) => {
-
+const Newsfeed = ({ navigation }: any) => {
   return(
       <ScrollView>
-        <Container>
-            { fakeData.response.map((post, index) => {
-              return(
-                <PostCard 
-                  key={index}
-                  profileImage={post.profileImage}
-                  firstName={post.firstName}
-                  lastName={post.lastName}
-                  middleIntial={post.middleIntial}
-                  specializtion={post.specializtion}
-                  description={post.description}
-                  numberOfComments={post.numberOfComments}
-                  numberOfLikes={post.numberOfLikes}
-                  postLiked={post.postLiked}
-                  navigateToUserProfile={() => navigation.push('profile')}
-                  navigateToPostDetails={() => navigation.push('post-details')}
-                  navigateToComments={() => navigation.push('post-details')}
-                  handleLikePost={() => {}}
-                  handleCommentOnPost={() => {}}
-                />
-              )
-            })}
-        </Container>
+			<Container>
+				{ fakeData.response.map((post, index) => {
+					const {
+						uid,
+						profileImage,
+						firstName,
+						lastName,
+						middleIntial,
+						specializtion,
+						description,
+						numberOfComments,
+						numberOfLikes,
+						postLiked,
+					} = post;
+					// React Natives "List" component will be added for rendering and fetching optimizations soon
+					return(
+						<PostCard 
+							key={index}
+							profileImage={profileImage}
+							firstName={firstName}
+							lastName={lastName}
+							middleIntial={middleIntial}
+							specializtion={specializtion}
+							description={description}
+							numberOfComments={numberOfComments}
+							numberOfLikes={numberOfLikes}
+							postLiked={postLiked}
+							navigateToUserProfile={() => navigation.push('profile')}
+							navigateToPostDetails={() => navigation.push('post-details', {
+								uid,
+								profileImage,
+								firstName,
+								lastName,
+								middleIntial,
+								specializtion,
+								description,
+								numberOfComments,
+								numberOfLikes,
+								postLiked,
+							})}
+							navigateToComments={() => navigation.push('post-details')}
+							handleLikePost={() => {}}
+							handleCommentOnPost={() => {}}
+						/>
+					)
+				})}
+			</Container>
       </ScrollView>
   )
 };

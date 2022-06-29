@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type PostCardI = {
    profileImage: string | undefined
@@ -13,8 +13,8 @@ type PostCardI = {
    numberOfLikes: number | undefined
    postLiked: boolean | null
    navigateToUserProfile: () => void
-   navigateToPostDetails: () => void
-   navigateToComments: () => void
+   navigateToPostDetails?: () => void
+   navigateToComments?: () => void
    handleLikePost: () => void
    handleCommentOnPost: () => void
 };
@@ -85,12 +85,12 @@ const PostCard = ({
 export default PostCard;
 
 const Container = styled.View`
-   width: ${screenWidth - 20}px;
    border-bottom-style: solid;
    border-bottom-color: #E9E9E9;
    border-bottom-width: 1px;
    margin-bottom: 18px;
    padding-bottom: 10px;
+   width: ${screenWidth - 20}px;
 `;
 
 const Text = styled.Text`
@@ -127,7 +127,6 @@ const Content = styled.View`
 
 const ActionButtons = styled.View`
    align-items: center;
-   flex: 1;
    flex-direction: row;
    margin-top: 10px;
 `;
