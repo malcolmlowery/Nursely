@@ -1,21 +1,36 @@
+import { useState } from 'react';
 import styled from 'styled-components/native';
 import PostCard from '../components/PostCard';
 
-const Newsfeed = () => {
+// User posts placeholder data
+import fakeData from '../data/fakeData.json';
+
+const Newsfeed = ({ navigation }) => {
+
   return(
       <ScrollView>
         <Container>
-            <PostCard 
-              profileImage='https://www.safetyandhealthmagazine.com/ext/resources/images/news/healthcare/female-nurse.jpg?1494948091'
-              firstName='Malani'
-              lastName='Lowery'
-              middleIntial='K'
-              specializtion='oncology'
-              description="The report, which will form part of the BMA's submission to the UK Covid-19 Public Inquiry, included anecdotal evidence from healthcare workers, who described shortages of personal protective equipment (PPE), lack of testing capacity and low staffing levels which left them unprotected and at risk of exposure to Covid-19."
-              numberOfComments={20}
-              numberOfLikes={3}
-              postLiked={false}
-            />
+            { fakeData.response.map((post, index) => {
+              return(
+                <PostCard 
+                  key={index}
+                  profileImage={post.profileImage}
+                  firstName={post.firstName}
+                  lastName={post.lastName}
+                  middleIntial={post.middleIntial}
+                  specializtion={post.specializtion}
+                  description={post.description}
+                  numberOfComments={post.numberOfComments}
+                  numberOfLikes={post.numberOfLikes}
+                  postLiked={post.postLiked}
+                  navigateToUserProfile={() => navigation.push('profile')}
+                  navigateToPostDetails={() => navigation.push('post-details')}
+                  navigateToComments={() => navigation.push('post-details')}
+                  handleLikePost={() => {}}
+                  handleCommentOnPost={() => {}}
+                />
+              )
+            })}
         </Container>
       </ScrollView>
   )
@@ -25,7 +40,7 @@ export default Newsfeed;
 
 const ScrollView = styled.ScrollView`
 	background-color: #f8f8f8;
-	padding-top: 10px;
+	padding-top: 14px;
 `;
 
 const Container = styled.View`

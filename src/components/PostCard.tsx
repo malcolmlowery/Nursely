@@ -6,12 +6,17 @@ type PostCardI = {
    profileImage: string | undefined
    firstName: string
    lastName: string
-   middleIntial: string | undefined
+   middleIntial: string | null
    specializtion: string | undefined
    description: string
    numberOfComments: number | undefined
    numberOfLikes: number | undefined
-   postLiked: boolean
+   postLiked: boolean | null
+   navigateToUserProfile: () => void
+   navigateToPostDetails: () => void
+   navigateToComments: () => void
+   handleLikePost: () => void
+   handleCommentOnPost: () => void
 };
 
 const screenWidth = Dimensions.get('screen').width;
@@ -25,39 +30,51 @@ const PostCard = ({
    description,
    numberOfComments,
    numberOfLikes,
-   postLiked
+   postLiked,
+   navigateToUserProfile,
+   navigateToPostDetails,
+   navigateToComments,
+   handleLikePost,
+   handleCommentOnPost
    }: PostCardI) => {
    return(
       <Container>
          <Header>
-            <Btn>
+            <Btn onPress={navigateToUserProfile}>
                <UserInfo>
                   <ProfileImage source={{ uri: profileImage }} />
                   <UserName>
-                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 12 }}>{firstName} {middleIntial}. {lastName}</Text>
-                     <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 12 }}>{specializtion}</Text>
+                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>
+                        {firstName} 
+                        {middleIntial !== null ? ` ${middleIntial}. ${lastName}` : ' ' + lastName}
+                     </Text>
+                     <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14 }}>{specializtion}</Text>
                   </UserName>
                </UserInfo>
             </Btn>
-            <Btn style={{ top: 4 }}>
-               <Ionicons name='ios-alert-circle' size={16} color='#B9B9B9' />
+            <Btn>
+               <Ionicons name='ios-alert-circle' size={20} color='#B9B9B9' />
             </Btn>
          </Header>
          <Content>
-            <Text style={{ color: '#131313', fontSize: 12, lineHeight: 16.95 }}>{description}</Text>
+            <Btn onPress={navigateToPostDetails}>
+               <Text style={{ color: '#272727', fontSize: 14, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
+            </Btn>
          </Content>
          <ActionButtons>
-            <Text style={{ color: '#8A8A8A', fontWeight: '600' }}>{numberOfComments} comments</Text>
-            <Text style={{ color: '#D6493E', fontWeight: '600', marginLeft: 12 }}>{numberOfLikes} likes</Text>
+            <Btn onPress={navigateToComments}>
+               <Text style={{ color: '#8A8A8A', fontWeight: '500' }}>{numberOfComments} comments</Text>
+            </Btn>
+            <Text style={{ color: '#D6493E', fontWeight: '500', marginLeft: 12 }}>{numberOfLikes} likes</Text>
             <Spacer />
-            <CommentBtn>
-               <Text style={{ color: '#fff', fontWeight: '500' }}>comment</Text>
+            <CommentBtn onPress={handleCommentOnPost}>
+               <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Comment</Text>
             </CommentBtn>
-            <Btn>
+            <Btn onPress={handleLikePost}>
                { postLiked === true ?
-                  <Ionicons name='heart' size={28} color='#D6493E' /> 
+                  <Ionicons name='heart' size={38} color='#D6493E' /> 
                   :
-                  <Ionicons name='heart' size={28} color='#DEDEDE' />
+                  <Ionicons name='heart' size={38} color='#DEDEDE' />
                }
             </Btn>
          </ActionButtons>
@@ -77,7 +94,7 @@ const Container = styled.View`
 `;
 
 const Text = styled.Text`
-   font-size: 11px;
+   font-size: 13px;
 `;
 
 const Spacer = styled.View`
@@ -94,9 +111,9 @@ const UserInfo = styled.View`
 `;
 
 const ProfileImage = styled.Image`
-   border-radius: 18px;
-   height: 35px;
-   width: 35px;
+   border-radius: 20px;
+   height: 40px;
+   width: 40px;
 `;
 
 const UserName = styled.View`
@@ -117,8 +134,8 @@ const ActionButtons = styled.View`
 
 const CommentBtn = styled.TouchableOpacity`
    background-color: #5F5BFF;
-   border-radius: 14px;
-   height: 24px;
+   border-radius: 16px;
+   height: 32px;
    justify-content: center;
    margin-right: 14px;
    padding: 0 32px;
