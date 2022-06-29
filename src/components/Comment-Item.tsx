@@ -30,9 +30,9 @@ const CommentItem = ({
                <Text style={{ fontWeight: '500', marginLeft: 10 }}>{username}</Text>
             </Btn>
             <Spacer />
-            <Btn>
+            {/* <Btn>
                <Ionicons style={{ marginRight: 8 }} name='ios-alert-circle' size={20} color='#dedede' />
-            </Btn>
+            </Btn> */}
          </Header>
          <Content>
             <Text style={{ color: '#272727' }}>{response}</Text>
