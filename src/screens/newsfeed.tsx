@@ -50,6 +50,7 @@ const Newsfeed = ({ navigation }: any) => {
 							navigateToComments={() => navigation.push('post-details')}
 							handleLikePost={() => {}}
 							handleCommentOnPost={() => {}}
+							style={{ marginBottom: 12 }}
 						/>
 					)
 				})}

@@ -17,6 +17,7 @@ type PostCardI = {
    navigateToComments?: () => void
    handleLikePost: () => void
    handleCommentOnPost: () => void
+   style?: any
 };
 
 const screenWidth = Dimensions.get('screen').width;
@@ -35,10 +36,11 @@ const PostCard = ({
    navigateToPostDetails,
    navigateToComments,
    handleLikePost,
-   handleCommentOnPost
+   handleCommentOnPost,
+   style
    }: PostCardI) => {
    return(
-      <Container>
+      <Container style={style}>
          <Header>
             <Btn onPress={navigateToUserProfile}>
                <UserInfo>
@@ -88,7 +90,6 @@ const Container = styled.View`
    border-bottom-style: solid;
    border-bottom-color: #E9E9E9;
    border-bottom-width: 1px;
-   margin-bottom: 18px;
    padding-bottom: 10px;
    width: ${screenWidth - 20}px;
 `;
