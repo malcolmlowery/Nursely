@@ -63,7 +63,7 @@ export default Newsfeed;
 
 const ScrollView = styled.ScrollView`
 	background-color: #f8f8f8;
-	padding-top: 14px;
+	padding-top: 20px;
 `;
 
 const Container = styled.View`
@@ -71,4 +71,6 @@ const Container = styled.View`
   display: flex;
   height: 100%;
   justify-content: center;
+  overflow: visible;
+  top: 140px;
 `;

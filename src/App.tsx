@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
 
 import Home from './screens/home';
 import Notifications from './screens/notifications';
@@ -11,7 +12,12 @@ const Tabs = createBottomTabNavigator();
 const App = () => {
   return(
     <NavigationContainer>
-      <Tabs.Navigator>
+      <Tabs.Navigator screenOptions={{
+        tabBarStyle: { position: 'absolute' },
+        tabBarBackground: () => (
+          <BlurView tint="light" intensity={100} style={{ flex: 1 }} />
+        ),
+      }}>
         <Tabs.Screen name='home' component={Home} options={{ headerShown: false }} />
         <Tabs.Screen name='notifications' component={Notifications} />
         <Tabs.Screen name='messages' component={Messages} />

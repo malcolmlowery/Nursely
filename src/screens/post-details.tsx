@@ -76,14 +76,15 @@ const PostDetails = ({ navigation, route }: any) => {
 export default PostDetails;
 
 const ScrollView = styled.ScrollView`
-	width: ${screenWidth - 20}px;
+	width: ${screenWidth - 40}px;
+	padding-top: 10px;
 `;
 
 const Container = styled.View`
   	align-items: center;
 	background-color: #f8f8f8;
   	flex: 1;
-	padding-top: 14px;
+	padding-top: 20px;
 `;
 
 const Text = styled.Text`
