@@ -91,7 +91,7 @@ const Container = styled.View`
    border-bottom-color: #E9E9E9;
    border-bottom-width: 1px;
    padding-bottom: 10px;
-   width: ${screenWidth - 40}px;
+   width: ${screenWidth - 34}px;
 `;
 
 const Text = styled.Text`

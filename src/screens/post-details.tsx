@@ -1,11 +1,14 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+
 import PostCard from '../components/PostCard';
 import CommentItem from '../components/Comment-Item';
 
 const screenWidth = Dimensions.get('screen').width;
 
 const PostDetails = ({ navigation, route }: any) => {
+	const tabHeight = useBottomTabBarHeight();
 	const {
 		uid,
 		profileImage,
@@ -18,6 +21,32 @@ const PostDetails = ({ navigation, route }: any) => {
 		numberOfLikes,
 		postLiked,
 	} = route.params;
+
+	const renderCommentItem = ({ item }: any) => {
+		const {
+			uid,
+			profileImage,
+			username,
+			response,
+			reponsedLiked,
+			numberOfLikes,
+			navigateToUserProfile,
+			handleLikeResponsed
+		} = item;
+
+		return(
+			<CommentItem 
+				uid={uid}
+				profileImage={profileImage}
+				username={username}
+				response={response}
+				reponsedLiked={reponsedLiked}
+				numberOfLikes={numberOfLikes}
+				navigateToUserProfile={() => {}}
+				handleLikeResponsed={() => {}}
+			/>
+		)
+	}; 
 
   return(
 	<Container>
@@ -35,50 +64,53 @@ const PostDetails = ({ navigation, route }: any) => {
 			handleLikePost={() => {}}
 			handleCommentOnPost={() => {}}
 		/>
-		<ScrollView showsVerticalScrollIndicator={false}>
-			<Content>
-				<CommentItem 
-					uid='0d93r2hfduhfsd9fsud'
-					profileImage='https://avatars.githubusercontent.com/u/100153203?v=4'
-					username='Malcolm Lowery'
-					response='This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway'
-					reponsedLiked={false}
-					numberOfLikes={8}
-					navigateToUserProfile={() => {}}
-					handleLikeResponsed={() => {}}
-				/>
-				<CommentItem 
-					uid='42384892fh2fh2f9h2'
-					profileImage='https://explorehealthcareers.org/wp-content/uploads/2016/11/licensed_practical_nurse.jpg'
-					username='Tahsa Evans'
-					response='I am seriously considering changing careers and starting a 2 yr program through a community college to obtain my ADN and then to get certified as an RN.'
-					reponsedLiked={false}
-					numberOfLikes={0}
-					navigateToUserProfile={() => {}}
-					handleLikeResponsed={() => {}}
-				/>
-				<CommentItem 
-					uid='c89fy297g3rf92f92f39'
-					profileImage='https://www.elsevier.com/__data/assets/image/0020/1254521/NurseHeader2.png'
-					username='Issac T. Thorn'
-					response='I am a new nurse working nights on a telemetry/psych floor.'
-					reponsedLiked={true}
-					numberOfLikes={1}
-					navigateToUserProfile={() => {}}
-					handleLikeResponsed={() => {}}
-				/>
-			</Content>
-		</ScrollView>
+		<Content>
+			<FlatList 
+				showsVerticalScrollIndicator={false}
+				data={[
+					{
+						"uid": "0d93r2hfduhfsd9fsud",
+						"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
+						"username": "Malcolm Lowery",
+						"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
+						"reponsedLiked": false,
+						"numberOfLikes": 8
+					},
+					{
+						"uid": "y52y3bt4bt43t",
+						"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
+						"username": "Malcolm Lowery",
+						"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
+						"reponsedLiked": false,
+						"numberOfLikes": 8
+					},
+					{
+						"uid": "673ybb4422b6635b63",
+						"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
+						"username": "Malcolm Lowery",
+						"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
+						"reponsedLiked": false,
+						"numberOfLikes": 8
+					},
+					{
+						"uid": "r23v80u2380v23y98n29m",
+						"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
+						"username": "Malcolm Lowery",
+						"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
+						"reponsedLiked": false,
+						"numberOfLikes": 8
+					},
+				]}
+				renderItem={renderCommentItem}
+				keyExtractor={item => item.uid}
+				contentInset={{ bottom: tabHeight + 18 }}
+			/>
+		</Content>
 	</Container>
   )
 };
 
 export default PostDetails;
-
-const ScrollView = styled.ScrollView`
-	width: ${screenWidth - 40}px;
-	padding-top: 10px;
-`;
 
 const Container = styled.View`
   	align-items: center;
@@ -92,5 +124,10 @@ const Text = styled.Text`
 `;
 
 const Content = styled.View`
+	flex: 1
+`;
 
+const FlatList = styled.FlatList`
+	width: ${screenWidth - 40}px;
+	padding-top: 8px;
 `;
