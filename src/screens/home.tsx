@@ -1,9 +1,11 @@
+import styled from 'styled-components/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// Screens
 import Newsfeed from './newsfeed';
 import Profile from './profile';
 import Messages from './messages';
 import PostDetails from './post-details';
-import styled from 'styled-components/native';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +22,7 @@ const Home = () => {
           headerBlurEffect: 'prominent',
           headerLeft: () => {
             return(
-              <Text style={{ fontWeight: '600', fontSize: 26 }}>Nursely</Text>
+              <Text style={{ color: '#131313', fontWeight: '600', fontSize: 32 }}>Nursely</Text>
             )
           },
           headerRight: () => {

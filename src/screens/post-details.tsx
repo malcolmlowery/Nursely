@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
+// Components
 import PostCard from '../components/PostCard';
 import CommentItem from '../components/Comment-Item';
 
@@ -102,7 +103,7 @@ const PostDetails = ({ navigation, route }: any) => {
 					},
 				]}
 				renderItem={renderCommentItem}
-				keyExtractor={item => item.uid}
+				keyExtractor={(item: any) => item.uid}
 				contentInset={{ bottom: tabHeight + 18 }}
 			/>
 		</Content>

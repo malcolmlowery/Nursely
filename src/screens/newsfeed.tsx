@@ -2,7 +2,8 @@ import styled from 'styled-components/native';
 import { useState } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useHeaderHeight } from '@react-navigation/elements';
+
+// Components
 import PostCard from '../components/PostCard';
 
 // User posts placeholder data
@@ -10,7 +11,6 @@ import fakeData from '../data/fakeData.json';
 
 const Newsfeed = ({ navigation }: any) => {
 	const tabHeight = useBottomTabBarHeight();
-
 	const [refreshing, setRefreshing] = useState(false);
 
 	const renderPostItem = ({ item }: any) => {
@@ -57,21 +57,20 @@ const Newsfeed = ({ navigation }: any) => {
 				style={{ marginBottom: 12 }}
 			/>
 		)
-	} 
+	};
 	
   	return(
 		<HeaderHeightContext.Consumer>
-			{(headerHeight) => {
-				console.log(headerHeight)
+			{(headerHeight: any) => {
 				return(
 					<Container>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
 							data={fakeData.response}
 							renderItem={renderPostItem}
-							keyExtractor={item => item.uid}
-							style={{ top: headerHeight }}
-							contentInset={{ bottom: tabHeight + headerHeight + 16 }}
+							keyExtractor={(item: any) => item.uid}
+							style={{ top: headerHeight, overflow: 'visible' }}
+							contentInset={{ bottom: tabHeight + headerHeight + 20 }}
 							refreshing={refreshing}
 							onRefresh={() => {
 								setRefreshing(true)
@@ -85,7 +84,7 @@ const Newsfeed = ({ navigation }: any) => {
 										style={{ 
 											alignSelf: 'center', 
 											color: '#C8C8C8', 
-											marginTop: 16
+											marginTop: 16,
 										}}>
 											Nothing else to see here!
 									</Text>
