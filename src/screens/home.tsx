@@ -43,9 +43,7 @@ const Home = () => {
 
 export default Home;
 
-const Text = styled.Text`
-
-`;
+const Text = styled.Text``;
 
 const Btn = styled.TouchableHighlight``;
 

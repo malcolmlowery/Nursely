@@ -1,3 +1,4 @@
+import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
@@ -44,10 +45,29 @@ const App = () => {
 					headerBackground: () => (
 						<BlurView tint="light" intensity={100} style={{ flex: 1 }} />
 					),
-					headerTitleAlign: 'left'
+					headerTitleAlign: 'left',
+					headerTitle: () => {
+						let headerName: string;
+
+						if(route.name === 'home') {
+							headerName = 'Nursely'
+						} else if(route.name === 'notifications') {
+							headerName = 'Notifications'
+						} else if(route.name === 'messages') {
+							headerName = 'Messages'
+						} else if(route.name === 'settings') {
+							headerName = 'Settings'
+						} else {
+							headerName = 'N/A'
+						}
+
+						return(
+							<Text style={{ color: '#131313', fontWeight: '600', fontSize: 17 }}>{headerName}</Text>
+						)
+					}
 				})}>
 					<Tabs.Screen name='home' component={Home} options={{ headerShown: false }} />
-					<Tabs.Screen name='notifications' component={Notifications} options={{ headerTitle: 'Notifications' }} />
+					<Tabs.Screen name='notifications' component={Notifications} />
 					<Tabs.Screen name='messages' component={Messages} />
 					<Tabs.Screen name='settings' component={Settings} />
 				</Tabs.Navigator>
@@ -57,3 +77,5 @@ const App = () => {
 };
 
 export default App;
+
+const Text = styled.Text``;
