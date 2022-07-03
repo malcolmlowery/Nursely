@@ -35,7 +35,7 @@ const Home = () => {
           }
       }} />
       <Stack.Screen name='post-details' component={PostDetails} options={{ headerBackTitle: 'Newsfeed', headerTitle: '' }} />
-      <Stack.Screen name='profile' component={Profile} options={{ headerBackTitle: 'Newsfeed', headerTitle: '', headerShown: false }} />
+      <Stack.Screen name='profile' component={Profile} options={{ headerBackTitle: 'Newsfeed', headerShown: true, headerLargeTitle: true }} />
       <Stack.Screen name='messages' component={Messages} />
     </Stack.Navigator>
   )

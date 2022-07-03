@@ -6,11 +6,13 @@ import Home from './screens/home';
 import Notifications from './screens/notifications';
 import Messages from './screens/messages';
 import Settings from './screens/settings';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Tabs = createBottomTabNavigator();
 
 const App = () => {
   return(
+    <SafeAreaProvider>
     <NavigationContainer>
       <Tabs.Navigator screenOptions={{
         tabBarStyle: { position: 'absolute' },
@@ -24,6 +26,7 @@ const App = () => {
         <Tabs.Screen name='settings' component={Settings} />
       </Tabs.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   )
 };
 
