@@ -1,10 +1,18 @@
 import styled from 'styled-components/native';
 import { HeaderHeightContext } from '@react-navigation/elements';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
+
+// Components
+import PostCard from '../components/PostCard';
+
+// User posts placeholder data
+import fakeData from '../data/fakeData.json';
 
 const Profile = ({ navigation }: any) => {
+	const tabHeight = useBottomTabBarHeight();
 
    useLayoutEffect(() => {
       navigation.setOptions({
@@ -46,6 +54,54 @@ const Profile = ({ navigation }: any) => {
                                  <Text style={{ fontSize: 12, fontWeight: '600', marginLeft: 6 }}>Departments: ICU, Neurology, Gynecology</Text>
                               </TextIconItem>
                            </AboutSection>
+                           <UserPosts style={{ marginBottom: tabHeight + 60, marginTop: 16 }}>
+                              {fakeData.response.map((data, index) => {
+                                 const {
+                                    uid,
+                                    profileImage,
+                                    firstName,
+                                    lastName,
+                                    middleIntial,
+                                    specializtion,
+                                    description,
+                                    numberOfComments,
+                                    numberOfLikes,
+                                    postLiked,
+                                 } = data;
+
+                                 return(
+                                    <PostCard 
+                                       key={index}
+                                       profileImage={profileImage}
+                                       firstName={firstName}
+                                       lastName={lastName}
+                                       middleIntial={middleIntial}
+                                       specializtion={specializtion}
+                                       description={description}
+                                       numberOfComments={numberOfComments}
+                                       numberOfLikes={numberOfLikes}
+                                       postLiked={postLiked}
+                                       navigateToUserProfile={() => {}}
+                                       navigateToPostDetails={() => navigation.push('post-details', {
+                                          uid,
+                                          profileImage,
+                                          firstName,
+                                          lastName,
+                                          middleIntial,
+                                          specializtion,
+                                          description,
+                                          numberOfComments,
+                                          numberOfLikes,
+                                          postLiked,
+                                       })}
+                                       navigateToComments={() => navigation.push('post-details')}
+                                       handleLikePost={() => {}}
+                                       handleCommentOnPost={() => {}}
+                                       style={{ marginBottom: 12 }}
+                                    />
+                                 )
+                              })}
+                           </UserPosts>
                         </Content>
                      </ScrollView>
                   </Container>
@@ -126,3 +182,5 @@ const TextIconItem = styled.View`
    flex-direction: row;
    margin-bottom: 8px;
 `;
+
+const UserPosts = styled.View``;
