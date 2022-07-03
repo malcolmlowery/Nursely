@@ -11,15 +11,16 @@ const Stack = createNativeStackNavigator();
 
 const Home = () => {
   return(
-    <Stack.Navigator screenOptions={{ headerShadowVisible: false }}>
+    <Stack.Navigator screenOptions={{ 
+      headerLargeTitle: false,
+      headerShadowVisible: true, 
+      headerBlurEffect: 'prominent', 
+      headerTransparent: true }}>
       <Stack.Screen 
         name='newsfeed' 
         component={Newsfeed} 
         options={{ 
-          headerLargeTitle: false, 
-          headerTitle: '', 
-          headerTransparent: true,
-          headerBlurEffect: 'prominent',
+          headerTitle: '',
           headerLeft: () => {
             return(
               <Text style={{ color: '#131313', fontWeight: '600', fontSize: 32 }}>Nursely</Text>
@@ -34,7 +35,7 @@ const Home = () => {
           }
       }} />
       <Stack.Screen name='post-details' component={PostDetails} options={{ headerBackTitle: 'Newsfeed', headerTitle: '' }} />
-      <Stack.Screen name='profile' component={Profile} options={{ headerBackTitle: 'Newsfeed', headerTitle: '' }} />
+      <Stack.Screen name='profile' component={Profile} options={{ headerBackTitle: 'Newsfeed', headerTitle: '', headerShown: false }} />
       <Stack.Screen name='messages' component={Messages} />
     </Stack.Navigator>
   )

@@ -70,7 +70,7 @@ const Newsfeed = ({ navigation }: any) => {
 							renderItem={renderPostItem}
 							keyExtractor={(item: any) => item.uid}
 							style={{ top: headerHeight, overflow: 'visible' }}
-							contentInset={{ bottom: tabHeight + headerHeight + 20 }}
+							contentInset={{ bottom: tabHeight + headerHeight + 18 }}
 							refreshing={refreshing}
 							onRefresh={() => {
 								setRefreshing(true)
@@ -104,11 +104,10 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   flex: 1;
+  padding-top: 20px;
 `;
 
-const FlatList = styled.FlatList`
-	padding-top: 20px;
-`;
+const FlatList = styled.FlatList``;
 
 const Text = styled.Text`
 	color: #000;
