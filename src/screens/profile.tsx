@@ -16,7 +16,7 @@ const Profile = ({ navigation }: any) => {
 
    useLayoutEffect(() => {
       navigation.setOptions({
-         title: 'Malcolm Lowery'
+         title: 'Malcolm Lowery',
       });
    }, []);
 

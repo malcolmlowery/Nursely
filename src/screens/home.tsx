@@ -23,7 +23,7 @@ const Home = () => {
           headerTitle: '',
           headerLeft: () => {
             return(
-              <Text style={{ color: '#131313', fontWeight: '600', fontSize: 32 }}>Nursely</Text>
+              <Text style={{ color: '#131313', fontWeight: '600', fontSize: 17 }}>Nursely</Text>
             )
           },
           headerRight: () => {
