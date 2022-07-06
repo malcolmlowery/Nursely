@@ -1,9 +1,8 @@
 import styled from 'styled-components/native';
 import { HeaderHeightContext } from '@react-navigation/elements';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLayoutEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons'; 
 
 // Components
 import PostCard from '../components/PostCard';
@@ -12,7 +11,6 @@ import PostCard from '../components/PostCard';
 import fakeData from '../data/fakeData.json';
 
 const Profile = ({ navigation }: any) => {
-	const tabHeight = useBottomTabBarHeight();
 
    useLayoutEffect(() => {
       navigation.setOptions({
@@ -24,8 +22,7 @@ const Profile = ({ navigation }: any) => {
       <HeaderHeightContext.Consumer>
          {(headerHeight: any) => {
             return(
-               <SafeAreaView style={{ flex: 1 , top: headerHeight }}>
-                  <Container>
+               <SafeAreaView style={{ flex: 1, marginBottom: headerHeight * 1.75, top: headerHeight }}>
                      <ScrollView>
                         <Header>
                            <BannerImage source={{ uri: 'https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2020/11/10/1005/Hyatt-Centric-Las-Olas-Fort-Lauderdale-P038-Dusk-Hotel.jpg/Hyatt-Centric-Las-Olas-Fort-Lauderdale-P038-Dusk-Hotel.16x9.jpg?imwidth=1920' }} />
@@ -54,7 +51,7 @@ const Profile = ({ navigation }: any) => {
                                  <Text style={{ fontSize: 12, fontWeight: '600', marginLeft: 6 }}>Departments: ICU, Neurology, Gynecology</Text>
                               </TextIconItem>
                            </AboutSection>
-                           <UserPosts style={{ marginBottom: tabHeight + 60, marginTop: 16 }}>
+                           <UserPosts style={{ marginBottom: 0, marginTop: 16 }}>
                               {fakeData.response.map((data, index) => {
                                  const {
                                     uid,
@@ -104,7 +101,6 @@ const Profile = ({ navigation }: any) => {
                            </UserPosts>
                         </Content>
                      </ScrollView>
-                  </Container>
                </SafeAreaView>
             )
          }}

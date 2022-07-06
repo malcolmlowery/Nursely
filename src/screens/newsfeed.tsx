@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { useState } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 // Components
 import PostCard from '../components/PostCard';
@@ -10,7 +9,6 @@ import PostCard from '../components/PostCard';
 import fakeData from '../data/fakeData.json';
 
 const Newsfeed = ({ navigation }: any) => {
-	const tabHeight = useBottomTabBarHeight();
 	const [refreshing, setRefreshing] = useState(false);
 
 	const renderPostItem = ({ item }: any) => {
@@ -61,16 +59,16 @@ const Newsfeed = ({ navigation }: any) => {
 	
   	return(
 		<HeaderHeightContext.Consumer>
-			{(headerHeight: any) => {
+			{(headerHeight) => {
 				return(
-					<Container>
+					<Container style={{ marginBottom: headerHeight }}>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
 							data={fakeData.response}
 							renderItem={renderPostItem}
 							keyExtractor={(item: any) => item.uid}
-							style={{ top: headerHeight, overflow: 'visible' }}
-							contentInset={{ bottom: tabHeight + headerHeight + 18 }}
+							style={{ overflow: 'visible', top: headerHeight }}
+							contentInset={{ top: 0, bottom: 100 }}
 							refreshing={refreshing}
 							onRefresh={() => {
 								setRefreshing(true)
@@ -85,6 +83,7 @@ const Newsfeed = ({ navigation }: any) => {
 											alignSelf: 'center', 
 											color: '#C8C8C8', 
 											marginTop: 16,
+											marginBottom: 28
 										}}>
 											Nothing else to see here!
 									</Text>
@@ -103,8 +102,7 @@ export default Newsfeed;
 const Container = styled.View`
   align-items: center;
   justify-content: center;
-  flex: 1;
-  padding-top: 20px;
+  top: 20px;
 `;
 
 const FlatList = styled.FlatList``;

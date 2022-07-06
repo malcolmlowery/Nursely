@@ -56,7 +56,7 @@ export default CommentItem;
 
 const Container = styled.View`
    border-bottom-style: solid;
-   border-bottom-color: #E9E9E9;
+   border-bottom-color: #dedede;
    border-bottom-width: 1px;
    padding-top: 10px;
    padding-bottom: 10px;

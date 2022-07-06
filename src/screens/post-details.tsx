@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { HeaderHeightContext } from '@react-navigation/elements';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 // Components
 import PostCard from '../components/PostCard';
@@ -10,7 +9,6 @@ import CommentItem from '../components/Comment-Item';
 const screenWidth = Dimensions.get('screen').width;
 
 const PostDetails = ({ navigation, route }: any) => {
-	const tabHeight = useBottomTabBarHeight();
 	const {
 		uid,
 		profileImage,
@@ -54,7 +52,8 @@ const PostDetails = ({ navigation, route }: any) => {
 	<HeaderHeightContext.Consumer>
 		{(headerHeight: any) => {
 			return(
-				<Container style={{ top: headerHeight }}>
+				<>
+				<Container style={{  }}>
 					<PostCard 
 						profileImage={profileImage}
 						firstName={firstName}
@@ -68,8 +67,10 @@ const PostDetails = ({ navigation, route }: any) => {
 						navigateToUserProfile={() => navigation.push('profile', { uid })}
 						handleLikePost={() => {}}
 						handleCommentOnPost={() => {}}
+						style={{ marginTop: headerHeight + 20, borderBottomWidth: 0 }}
 					/>
-					<Content>
+				</Container>
+				<Content>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
 							data={[
@@ -106,12 +107,25 @@ const PostDetails = ({ navigation, route }: any) => {
 									"numberOfLikes": 8
 								},
 							]}
+							ListFooterComponent={() => {
+								return(
+									<Text 
+										style={{ 
+											alignSelf: 'center', 
+											color: '#C8C8C8', 
+											marginTop: 16,
+											marginBottom: 16
+										}}>
+											Nothing else to see here!
+									</Text>
+								)
+							}}
 							renderItem={renderCommentItem}
 							keyExtractor={(item: any) => item.uid}
-							contentInset={{ bottom: tabHeight + headerHeight + 18 }}
+							contentInset={{ bottom: headerHeight }}
 						/>
 					</Content>
-				</Container>
+				</>
 			)
 		}}
 	</HeaderHeightContext.Consumer>
@@ -122,19 +136,17 @@ export default PostDetails;
 
 const Container = styled.View`
   	align-items: center;
-  	flex: 1;
-	padding-top: 20px;
-`;
-
-const Text = styled.Text`
-   font-size: 13px;
 `;
 
 const Content = styled.View`
 	flex: 1;
 `;
 
+const Text = styled.Text``;
+
 const FlatList = styled.FlatList`
-	width: ${screenWidth - 40}px;
+	background-color: #e9e9e9;
 	padding-top: 8px;
+	padding-left: ${20}px;
+	padding-right: ${20}px;
 `;
