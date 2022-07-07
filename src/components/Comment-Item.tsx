@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-type CommentItemI = {
+interface CommentItemI {
    uid: string
    profileImage: string
    username: string

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { useState } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
+import { Ionicons } from '@expo/vector-icons';
 
 // Components
 import PostCard from '../components/PostCard';
@@ -59,7 +60,7 @@ const Newsfeed = ({ navigation }: any) => {
 	
   	return(
 		<HeaderHeightContext.Consumer>
-			{(headerHeight) => {
+			{(headerHeight: any) => {
 				return(
 					<Container style={{ marginBottom: headerHeight }}>
 						<FlatList 
@@ -81,7 +82,8 @@ const Newsfeed = ({ navigation }: any) => {
 									<Text 
 										style={{ 
 											alignSelf: 'center', 
-											color: '#C8C8C8', 
+											color: '#989898',
+											fontSize: 13, 
 											marginTop: 16,
 											marginBottom: 28
 										}}>
@@ -90,6 +92,9 @@ const Newsfeed = ({ navigation }: any) => {
 								)
 							}}
 						/>
+						<CreatePostButton onPress={() => navigation.push('createPost')} style={{ bottom: headerHeight - 50, right: 20 }}>
+							<Ionicons name='pencil' color='#fff' size={28} />
+						</CreatePostButton>
 					</Container>
 				)
 			}}
@@ -109,4 +114,15 @@ const FlatList = styled.FlatList``;
 
 const Text = styled.Text`
 	color: #000;
+`;
+
+const CreatePostButton = styled.TouchableOpacity`
+   align-items: center;
+   box-shadow: 0px 6px 6px rgba(0,0,0,0.15);
+   background-color: #5F5BFF;
+	border-radius: 37px;
+	height: 64px;
+	justify-content: center;
+	width: 64px;
+	position: absolute;
 `;

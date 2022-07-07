@@ -1,18 +1,6 @@
 {
    "response": [
       {
-         "uid": "dhu3h2u83h72794fhfewuf",
-         "profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
-         "firstName": "Malcolm",
-         "lastName": "Lowery",
-         "middleIntial": null,
-         "specializtion": "oncology",
-         "description": "The report, which will form part of the BMA's submission to the UK Covid-19 Public Inquiry, included anecdotal evidence from healthcare workers, who described shortages of personal protective equipment (PPE), lack of testing capacity and low staffing levels which left them unprotected and at risk of exposure to Covid-19.",
-         "numberOfComments": 20,
-         "numberOfLikes": 3,
-         "postLiked": true
-      },
-      {
          "uid": "431h",
          "profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
          "firstName": "Malcolm",
@@ -47,18 +35,6 @@
          "numberOfComments": 74,
          "numberOfLikes": 21,
          "postLiked": false
-      },
-      {
-         "uid": "0fsa0fg3wh838hg9gw79wegwh",
-         "profileImage": "https://st.focusedcollection.com/19002158/i/650/focused_224031048-stock-photo-portrait-smiling-female-nurse-standing.jpg",
-         "firstName": "Sarah",
-         "lastName": "Dunlap",
-         "middleIntial": "O",
-         "specializtion": "psychiatry",
-         "description": "How did anyone here pick their specialty if you have one? I have so many interests that are different from each other that's it's hard to choose!!",
-         "numberOfComments": 0,
-         "numberOfLikes": 0,
-         "postLiked": true
       },
       {
          "uid": "341480r01",

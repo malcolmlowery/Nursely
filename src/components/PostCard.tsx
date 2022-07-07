@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-type PostCardI = {
+interface PostCardI {
    profileImage: string | undefined
    firstName: string
    lastName: string

@@ -93,7 +93,8 @@ const Notifications = () => {
 						<Text 
 							style={{ 
 								alignSelf: 'center', 
-								color: '#C8C8C8', 
+								color: '#989898', 
+								fontSize: 13,
 								marginTop: 16,
 							}}>
 								Nothing else to see here!

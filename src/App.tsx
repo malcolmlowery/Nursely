@@ -12,6 +12,7 @@ import Messages from './screens/messages';
 import Settings from './screens/settings';
 import PostDetails from './screens/post-details';
 import Profile from './screens/profile';
+import CreatePost from './screens/create-post';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -81,6 +82,15 @@ const MainScreenStack = () => {
 					headerLargeTitle: true,
 					title: 'Malcolm Lowery'
 				}} 
+			/>
+			<Stack.Screen 
+				name='createPost'
+				component={CreatePost}
+				options={({ navigation }) => ({
+					presentation: 'transparentModal',
+					animation: 'fade',
+					headerShown: false
+				})}
 			/>
 			<Stack.Screen name='messages' component={Messages} />
 		</Stack.Navigator>
@@ -158,7 +168,7 @@ export default App;
 
 const Text = styled.Text``;
 
-const Button = styled.TouchableHighlight``;
+const Button = styled.TouchableOpacity``;
 
 const ProfileImage = styled.Image`
 	border-radius: 16px;
