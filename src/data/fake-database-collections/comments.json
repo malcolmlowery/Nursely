@@ -1,0 +1,19 @@
+{
+   "response": {
+      "userComments": [
+         {
+            "postID": "p3219848192",
+            "commenter": {
+               "uid": "nv23082b032ger8gfinfeincfich2h883v",
+               "firstName": "Danielle",
+               "lastName": "Teyra",
+               "middleIntial": "K",
+               "profilePhotoURL": "https://imageio.forbes.com/specials-images/imageserve/469368746/African-Female-doctor-with-annotation-table/960x0.jpg?format=jpg&width=960"
+            },
+            "description": "That is a tough question",
+            "numberOfLikes": 0,
+            "postLiked": false
+         }
+      ]
+   }
+}
