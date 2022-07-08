@@ -13,6 +13,7 @@ import Settings from './screens/settings';
 import PostDetails from './screens/post-details';
 import Profile from './screens/profile';
 import CreatePost from './screens/create-post';
+import Message from './screens/message';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -68,10 +69,7 @@ const MainScreenStack = () => {
 			<Stack.Screen 
 				name='post-details' 
 				component={PostDetails} 
-				options={{ 
-					headerTitle: '',
-					headerBackTitle: 'Newsfeed', 
-				}} 
+				options={{ headerTitle: '', headerBackTitle: 'Newsfeed' }} 
 			/>
 			<Stack.Screen 
 				name='profile' 
@@ -86,13 +84,36 @@ const MainScreenStack = () => {
 			<Stack.Screen 
 				name='createPost'
 				component={CreatePost}
-				options={({ navigation }) => ({
-					presentation: 'transparentModal',
-					animation: 'fade',
-					headerShown: false
-				})}
+				options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false }}
 			/>
 			<Stack.Screen name='messages' component={Messages} />
+		</Stack.Navigator>
+	)
+};
+
+const MessageStackNavigator = () => {
+	return(
+		<Stack.Navigator screenOptions={({ route }) => ({
+			headerShown: true,
+			headerBlurEffect: 'prominent',
+			headerTransparent: true,
+			headerTintColor: '#5F5BFF'
+		})}>
+			<Stack.Screen name='messages' component={Messages} options={{ headerTitle: '', headerLeft: () => <Text style={{ color: '#131313', fontWeight: '600', fontSize: 28 }}>Messages</Text> }} />
+			<Stack.Screen name='message' component={Message} options={{ headerLargeTitle: true, headerTitle: 'Chatroom', headerBackTitle: 'Messages', }} />
+		</Stack.Navigator>
+	)
+};
+
+const NotificationsStackNavigator = () => {
+	return(
+		<Stack.Navigator screenOptions={({ route }) => ({
+			headerShown: true,
+			headerBlurEffect: 'prominent',
+			headerTransparent: true,
+		})}>
+			<Stack.Screen name='messages' component={Notifications} options={{ headerTitle: '', headerLeft: () => <Text style={{ color: '#131313', fontWeight: '600', fontSize: 28 }}>Notifications</Text> }} />
+			<Stack.Screen name='post-details' component={PostDetails} options={{ headerTitle: '', headerBackTitle: 'Notifications' }} />
 		</Stack.Navigator>
 	)
 };
@@ -118,7 +139,7 @@ const App = () => {
 					iconeName = focused ? 'home' : 'home-outline'
 				} else if(route.name === 'notifications') {
 					iconeName = focused ? 'notifications' : 'notifications-outline'
-				} else if(route.name === 'messages') {
+				} else if(route.name === 'messages-route') {
 					iconeName = focused ? 'mail' : 'mail-outline'
 				} else if(route.name === 'settings') {
 					iconeName = focused ? 'settings' : 'settings-outline'
@@ -156,8 +177,8 @@ const App = () => {
 			}
 		})}>
 			<Tabs.Screen name='/' component={MainScreenStack} options={{ headerShown: false }} />
-			<Tabs.Screen name='notifications' component={Notifications} />
-			<Tabs.Screen name='messages' component={Messages} />
+			<Tabs.Screen name='notifications' component={NotificationsStackNavigator} options={{ headerShown: false }} />
+			<Tabs.Screen name='messages-route' component={MessageStackNavigator} options={{ headerShown: false }} />
 			<Tabs.Screen name='settings' component={Settings} />
 		</Tabs.Navigator>
 	</NavigationContainer>

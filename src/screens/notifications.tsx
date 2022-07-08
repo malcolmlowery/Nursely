@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
+import { HeaderHeightContext } from '@react-navigation/elements';
 import { Dimensions } from 'react-native';
 import { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const screenWidth = Dimensions.get('screen').width;
 
@@ -31,78 +33,84 @@ const fakeNotifications = {
 			"likedPosted": true
 		},
 	]
-}
-
-
-const renderItem = ({ item }: any) => {
-	const {
-		commentId,
-		profileImageURL,
-		username,
-		response
-	} = item;
-
-	const textLimiter = () => {
-		if(response.length > 60) {
-			return response.substr(0, 60) + '...'
-		}
-		return response
-	};
-
-  	return(
-		response ? 
-		<Button key={commentId}>
-			<GroupItem>
-				<GroupItemHeader>
-					<ProfileImage source={{ uri: profileImageURL }} />
-					<Text style={{ fontSize: 13, fontWeight: '500', marginLeft: 10 }}>{username} commented on your post.</Text>
-				</GroupItemHeader>
-				<Text style={{ color: '#5F5BFF', marginLeft: 38, fontSize: 13, lineHeight: 18.25 }}>Response: {textLimiter()}</Text>
-			</GroupItem>
-			<Divider />
-	 	</Button>
-		:
-		<Button>
-			<GroupItem>
-				<GroupItemHeader>
-					<ProfileImage source={{ uri: profileImageURL }} />
-					<Text style={{ fontSize: 13, fontWeight: '500', marginLeft: 10 }}>{username} liked on your post.</Text>
-				</GroupItemHeader>
-			</GroupItem>
-			<Divider />
-	 	</Button>
-  	)
 };
 
-const Notifications = () => {
+
+const Notifications = ({ navigation }: any) => {
 	const [refreshing, setRefreshing] = useState(false);
 	return(
-		<Container>
-			<FlatList 
-				data={fakeNotifications.response}
-				renderItem={renderItem}
-				refreshing={refreshing}
-				onRefresh={() => {
-					setRefreshing(true)
-					setTimeout(() => {
-						setRefreshing(false)
-					}, 2000);
-				}}
-				ListFooterComponent={() => {
-					return(
-						<Text 
-							style={{ 
-								alignSelf: 'center', 
-								color: '#989898', 
-								fontSize: 13,
-								marginTop: 16,
-							}}>
-								Nothing else to see here!
-						</Text>
-					)
-				}}
-			/>
-		</Container>
+		<HeaderHeightContext.Consumer>
+         {(headerHeight: any) => {
+            return(
+					<SafeAreaProvider style={{ flex: 1, marginBottom: headerHeight * 1.75, top: headerHeight }}>
+						<Container>
+							<FlatList 
+								data={fakeNotifications.response}
+								renderItem={({ item }: any) => {
+									const {
+										commentId,
+										profileImageURL,
+										username,
+										response
+									} = item;
+								
+									const textLimiter = () => {
+										if(response.length > 60) {
+											return response.substr(0, 60) + '...'
+										}
+										return response
+									};
+								
+									return(
+										response ? 
+										<Button key={commentId} onPress={() => navigation.navigate('post-details', { commentId })}>
+											<GroupItem>
+												<GroupItemHeader>
+													<ProfileImage source={{ uri: profileImageURL }} />
+													<Text style={{ fontSize: 13, fontWeight: '500', marginLeft: 10 }}>{username} commented on your post.</Text>
+												</GroupItemHeader>
+												<Text style={{ color: '#5F5BFF', marginLeft: 38, fontSize: 13, lineHeight: 18.25 }}>Response: {textLimiter()}</Text>
+											</GroupItem>
+											<Divider />
+										</Button>
+										:
+										<Button onPress={() => navigation.navigate('post-details', { commentId })}>
+											<GroupItem>
+												<GroupItemHeader>
+													<ProfileImage source={{ uri: profileImageURL }} />
+													<Text style={{ fontSize: 13, fontWeight: '500', marginLeft: 10 }}>{username} liked on your post.</Text>
+												</GroupItemHeader>
+											</GroupItem>
+											<Divider />
+										</Button>
+									)
+								}}
+								refreshing={refreshing}
+								onRefresh={() => {
+									setRefreshing(true)
+									setTimeout(() => {
+										setRefreshing(false)
+									}, 2000);
+								}}
+								ListFooterComponent={() => {
+									return(
+										<Text 
+											style={{ 
+												alignSelf: 'center', 
+												color: '#989898', 
+												fontSize: 13,
+												marginTop: 16,
+											}}>
+												Nothing else to see here!
+										</Text>
+									)
+								}}
+							/>
+						</Container>
+					</SafeAreaProvider>
+				)
+			}}
+		</HeaderHeightContext.Consumer>
 	)
 };
 

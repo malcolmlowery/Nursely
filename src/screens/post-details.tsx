@@ -4,9 +4,7 @@ import { HeaderHeightContext } from '@react-navigation/elements';
 
 // Components
 import PostCard from '../components/PostCard';
-import CommentItem from '../components/Comment-Item';
-
-const screenWidth = Dimensions.get('screen').width;
+import ListItem from '../components/ListItem';
 
 const PostDetails = ({ navigation, route }: any) => {
 	const {
@@ -35,7 +33,7 @@ const PostDetails = ({ navigation, route }: any) => {
 		} = item;
 
 		return(
-			<CommentItem 
+			<ListItem 
 				uid={uid}
 				profileImage={profileImage}
 				username={username}

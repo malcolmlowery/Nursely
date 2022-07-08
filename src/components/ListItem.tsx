@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-interface CommentItemI {
+interface ListItemII {
    uid: string
    profileImage: string
    username: string
@@ -12,7 +12,7 @@ interface CommentItemI {
    handleLikeResponsed: () => void
 };
 
-const CommentItem = ({
+const ListItem = ({
    uid,
    profileImage,
    username,
@@ -21,7 +21,7 @@ const CommentItem = ({
    numberOfLikes,
    navigateToUserProfile,
    handleLikeResponsed
-   }: CommentItemI) => {
+   }: ListItemII) => {
    return(
       <Container>
          <Header>
@@ -52,7 +52,7 @@ const CommentItem = ({
    )
 };
 
-export default CommentItem;
+export default ListItem;
 
 const Container = styled.View`
    border-bottom-style: solid;

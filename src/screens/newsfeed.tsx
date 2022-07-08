@@ -119,7 +119,7 @@ const Text = styled.Text`
 const CreatePostButton = styled.TouchableOpacity`
    align-items: center;
    box-shadow: 0px 6px 6px rgba(0,0,0,0.15);
-   background-color: #5F5BFF;
+   background-color: #3496ff;
 	border-radius: 37px;
 	height: 64px;
 	justify-content: center;
