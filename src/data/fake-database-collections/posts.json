@@ -1,9 +1,9 @@
 {
-   "response": {
-      "posts": [
+   "data": [
          {
             "postID": "p3219848192",
             "publisher": {
+               "uid": "v8392b3fu92bfu32ug23g",
                "profileImageURL": "https://avatars.githubusercontent.com/u/100153203?v=4",
                "firstName": "Malcolm",
                "lastName": "Lowery",
@@ -16,5 +16,4 @@
             "postLiked": false
          }
       ]
-   }
 }

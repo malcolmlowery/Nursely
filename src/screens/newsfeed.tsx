@@ -1,25 +1,30 @@
 import styled from 'styled-components/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../data/store';
+import { fetchPosts } from '../data/posts.reducer'
 
 // Components
 import PostCard from '../components/PostCard';
 
-// User posts placeholder data
-import fakeData from '../data/fakeData.json';
-
 const Newsfeed = ({ navigation }: any) => {
 	const [refreshing, setRefreshing] = useState(false);
+	const posts = useSelector((state: RootState) => state.posts.posts);
+	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		dispatch(fetchPosts())
+	}, [])
+
+	console.log(posts)
 
 	const renderPostItem = ({ item }: any) => {
 		const {
-			uid,
-			profileImage,
-			firstName,
-			lastName,
-			middleIntial,
-			specializtion,
+			postID,
+			publisher,
+			profileImageURL,
 			description,
 			numberOfComments,
 			numberOfLikes,
@@ -28,23 +33,23 @@ const Newsfeed = ({ navigation }: any) => {
 
 		return(
 			<PostCard 
-				profileImage={item.profileImage}
-				firstName={firstName}
-				lastName={lastName}
-				middleIntial={middleIntial}
-				specializtion={specializtion}
+				profileImage={publisher.profileImageURL}
+				firstName={publisher.firstName}
+				lastName={publisher.lastName}
+				middleIntial={publisher.middleIntial}
+				specializtion={publisher.jobTitle}
 				description={description}
 				numberOfComments={numberOfComments}
 				numberOfLikes={numberOfLikes}
 				postLiked={postLiked}
-				navigateToUserProfile={() => navigation.push('profile')}
+				navigateToUserProfile={() => navigation.push('profile', { uid: publisher.uid })}
 				navigateToPostDetails={() => navigation.push('post-details', {
-					uid,
-					profileImage,
-					firstName,
-					lastName,
-					middleIntial,
-					specializtion,
+					postID,
+					profileImageURL: publisher.profileImageURL,
+					firstName: publisher.firstName,
+					lastName: publisher.lastName,
+					middleIntial: publisher.middleIntial,
+					jobTitle: publisher.jobTitle,
 					description,
 					numberOfComments,
 					numberOfLikes,
@@ -65,15 +70,16 @@ const Newsfeed = ({ navigation }: any) => {
 					<Container style={{ marginBottom: headerHeight }}>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
-							data={fakeData.response}
+							data={posts}
 							renderItem={renderPostItem}
-							keyExtractor={(item: any) => item.uid}
+							keyExtractor={(item: any) => item.postID}
 							style={{ overflow: 'visible', top: headerHeight }}
 							contentInset={{ top: 0, bottom: 100 }}
 							refreshing={refreshing}
 							onRefresh={() => {
 								setRefreshing(true)
 								setTimeout(() => {
+									dispatch(fetchPosts())
 									setRefreshing(false)
 								}, 2000);
 							}}
