@@ -34,7 +34,7 @@ export const likePost = createAsyncThunk(
 export const fetchPosts = createAsyncThunk(
    'posts/fetchPosts',
    async () => {
-      const response = await fetch('http://localhost:3000/data')
+      const response = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts')
       return (await response.json().then(data => data))
    }
 );
