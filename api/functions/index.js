@@ -1,17 +1,16 @@
 require('dotenv').config();
 const app = require('express')();
 const admin = require('firebase-admin');
+const serviceAccount = require('../serviceAccountKey.json');
+const functions = require("firebase-functions");
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('./serviceAccountKey.json');
 
-admin.initializeApp({
-   credential: admin.credential.cert(serviceAccount)
-});
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 
 const firestore = getFirestore();
 
 app.get('/posts', async (req, res) => {
-   firestore
+   await firestore
       .collection('posts')
       .get()
       .then(snapshot => {
@@ -22,4 +21,4 @@ app.get('/posts', async (req, res) => {
       })
 });
 
-app.listen('9000', (port) => console.log(`Listening toposrt ${port}`))
+exports.api = functions.https.onRequest(app);
