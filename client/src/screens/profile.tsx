@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import PostCard from '../components/PostCard';
 
 // User posts placeholder data
-import fakeData from '../data/fakeData.json';
+import fakeData from '../data/fake-database-collections/fakeData.json';
 
 const Profile = ({ navigation }: any) => {
 
