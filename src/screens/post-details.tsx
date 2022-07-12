@@ -9,11 +9,11 @@ import ListItem from '../components/ListItem';
 const PostDetails = ({ navigation, route }: any) => {
 	const {
 		uid,
-		profileImage,
+		profileImageURL,
 		firstName,
 		lastName,
 		middleIntial,
-		specializtion,
+		jobTitle,
 		description,
 		numberOfComments,
 		numberOfLikes,
@@ -23,7 +23,7 @@ const PostDetails = ({ navigation, route }: any) => {
 	const renderCommentItem = ({ item }: any) => {
 		const {
 			uid,
-			profileImage,
+			profileImageURL,
 			username,
 			response,
 			reponsedLiked,
@@ -35,7 +35,7 @@ const PostDetails = ({ navigation, route }: any) => {
 		return(
 			<ListItem 
 				uid={uid}
-				profileImage={profileImage}
+				profileImage={profileImageURL}
 				username={username}
 				response={response}
 				reponsedLiked={reponsedLiked}
@@ -53,11 +53,11 @@ const PostDetails = ({ navigation, route }: any) => {
 				<>
 				<Container style={{  }}>
 					<PostCard 
-						profileImage={profileImage}
+						profileImageURL={profileImageURL}
 						firstName={firstName}
 						lastName={lastName}
 						middleIntial={middleIntial}
-						specializtion={specializtion}
+						jobTitle={jobTitle}
 						description={description}
 						numberOfComments={numberOfComments}
 						numberOfLikes={numberOfLikes}
@@ -71,40 +71,7 @@ const PostDetails = ({ navigation, route }: any) => {
 				<Content>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
-							data={[
-								{
-									"uid": "0d93r2hfduhfsd9fsud",
-									"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
-									"username": "Malcolm Lowery",
-									"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
-									"reponsedLiked": false,
-									"numberOfLikes": 8
-								},
-								{
-									"uid": "y52y3bt4bt43t",
-									"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
-									"username": "Malcolm Lowery",
-									"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
-									"reponsedLiked": false,
-									"numberOfLikes": 8
-								},
-								{
-									"uid": "673ybb4422b6635b63",
-									"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
-									"username": "Malcolm Lowery",
-									"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
-									"reponsedLiked": false,
-									"numberOfLikes": 8
-								},
-								{
-									"uid": "r23v80u2380v23y98n29m",
-									"profileImage": "https://avatars.githubusercontent.com/u/100153203?v=4",
-									"username": "Malcolm Lowery",
-									"response": "This has been the case where I work as well. Not sure what they are going to do about it. What are we going to do? No one listens anyway",
-									"reponsedLiked": false,
-									"numberOfLikes": 8
-								},
-							]}
+							data={null}
 							ListFooterComponent={() => {
 								return(
 									<Text 

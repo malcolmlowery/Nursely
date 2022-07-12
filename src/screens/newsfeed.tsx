@@ -1,107 +1,115 @@
 import styled from 'styled-components/native';
 import { useEffect, useState } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
-import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../data/store';
-import { fetchPosts } from '../data/posts.reducer'
+import { Ionicons } from '@expo/vector-icons';
+import { fetchPosts, likePost } from '../data/posts.reducer'
 
 // Components
 import PostCard from '../components/PostCard';
 
 const Newsfeed = ({ navigation }: any) => {
-	const [refreshing, setRefreshing] = useState(false);
 	const posts = useSelector((state: RootState) => state.posts.posts);
 	const dispatch = useDispatch<AppDispatch>();
+	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
 		dispatch(fetchPosts())
 	}, [])
-
-	console.log(posts)
-
-	const renderPostItem = ({ item }: any) => {
-		const {
-			postID,
-			publisher,
-			profileImageURL,
-			description,
-			numberOfComments,
-			numberOfLikes,
-			postLiked,
-		} = item;
-
-		return(
-			<PostCard 
-				profileImage={publisher.profileImageURL}
-				firstName={publisher.firstName}
-				lastName={publisher.lastName}
-				middleIntial={publisher.middleIntial}
-				specializtion={publisher.jobTitle}
-				description={description}
-				numberOfComments={numberOfComments}
-				numberOfLikes={numberOfLikes}
-				postLiked={postLiked}
-				navigateToUserProfile={() => navigation.push('profile', { uid: publisher.uid })}
-				navigateToPostDetails={() => navigation.push('post-details', {
-					postID,
-					profileImageURL: publisher.profileImageURL,
-					firstName: publisher.firstName,
-					lastName: publisher.lastName,
-					middleIntial: publisher.middleIntial,
-					jobTitle: publisher.jobTitle,
-					description,
-					numberOfComments,
-					numberOfLikes,
-					postLiked,
-				})}
-				navigateToComments={() => navigation.push('post-details')}
-				handleLikePost={() => {}}
-				handleCommentOnPost={() => {}}
-				style={{ marginBottom: 12 }}
-			/>
-		)
-	};
 	
   	return(
 		<HeaderHeightContext.Consumer>
 			{(headerHeight: any) => {
 				return(
-					<Container style={{ marginBottom: headerHeight }}>
-						<FlatList 
-							showsVerticalScrollIndicator={false}
-							data={posts}
-							renderItem={renderPostItem}
-							keyExtractor={(item: any) => item.postID}
-							style={{ overflow: 'visible', top: headerHeight }}
-							contentInset={{ top: 0, bottom: 100 }}
-							refreshing={refreshing}
-							onRefresh={() => {
-								setRefreshing(true)
-								setTimeout(() => {
-									dispatch(fetchPosts())
-									setRefreshing(false)
-								}, 2000);
-							}}
-							ListFooterComponent={() => {
-								return(
-									<Text 
-										style={{ 
-											alignSelf: 'center', 
-											color: '#989898',
-											fontSize: 13, 
-											marginTop: 16,
-											marginBottom: 28
-										}}>
-											Nothing else to see here!
-									</Text>
-								)
-							}}
-						/>
-						<CreatePostButton onPress={() => navigation.push('createPost')} style={{ bottom: headerHeight - 50, right: 20 }}>
-							<Ionicons name='pencil' color='#fff' size={28} />
+					<>
+						<Container style={{ marginBottom: headerHeight }}>
+							<FlatList 
+								showsVerticalScrollIndicator={false}
+								data={posts}
+								renderItem={({ item }: any) => {
+                           const {
+                              postID,
+                              publisher,
+                              description,
+                              numberOfComments,
+                              numberOfLikes,
+                              postLiked,
+                           } = item;
+
+                           const {
+                              uid,
+                              profileImageURL,
+                              firstName,
+                              lastName,
+                              middleIntial,
+                              jobTitle,
+                           } = publisher;
+                           
+                           return(
+                              <PostCard 
+                                 profileImageURL={profileImageURL}
+                                 firstName={firstName}
+                                 lastName={lastName}
+                                 middleIntial={middleIntial}
+                                 jobTitle={jobTitle}
+                                 description={description}
+                                 numberOfComments={numberOfComments}
+                                 numberOfLikes={numberOfLikes}
+                                 postLiked={postLiked}
+                                 navigateToUserProfile={() => navigation.push('profile', { uid })}
+                                 navigateToPostDetails={() => navigation.push('post-details', {
+                                    postID,
+                                    profileImageURL,
+                                    firstName,
+                                    lastName,
+                                    middleIntial,
+                                    jobTitle,
+                                    description,
+                                    numberOfComments,
+                                    numberOfLikes,
+                                    postLiked,
+                                 })}
+                                 navigateToComments={() => navigation.push('post-details', { postID })}
+                                 handleLikePost={() => dispatch(likePost())}
+                                 handleCommentOnPost={() => {}}
+                                 style={{ marginBottom: 12 }}
+                              />
+                           )
+                        }}
+								keyExtractor={(item: any) => item.postID}
+								style={{ top: headerHeight, overflow: 'visible' }}
+								contentInset={{ bottom: 70, top: 0 }}
+								refreshing={refreshing}
+								onRefresh={() => {
+									setRefreshing(true)
+									setTimeout(() => {
+										dispatch(fetchPosts())
+										setRefreshing(false)
+									}, 2000);
+								}}
+								ListFooterComponent={() => {
+									return(
+										<Text 
+											style={{ 
+												alignSelf: 'center', 
+												color: '#989898',
+												fontSize: 13, 
+												marginTop: 16,
+												marginBottom: 28
+											}}>
+												Nothing else to see here!
+										</Text>
+									)
+								}}
+							/>
+						</Container>
+						<CreatePostButton 
+                     onPress={() => navigation.push('createPost')} 
+                     style={{ bottom: headerHeight + 5, right: 20 }}>
+							   <Ionicons name='pencil' color='#fff' size={28} />
 						</CreatePostButton>
-					</Container>
+					</>
 				)
 			}}
 		</HeaderHeightContext.Consumer>

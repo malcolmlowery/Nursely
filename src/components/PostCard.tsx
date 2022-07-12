@@ -3,11 +3,11 @@ import { Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface PostCardI {
-   profileImage: string | undefined
+   profileImageURL: string | undefined
    firstName: string
    lastName: string
    middleIntial: string | null
-   specializtion: string | undefined
+   jobTitle: string | undefined
    description: string
    numberOfComments: number | undefined
    numberOfLikes: number | undefined
@@ -23,11 +23,11 @@ interface PostCardI {
 const screenWidth = Dimensions.get('screen').width;
 
 const PostCard = ({ 
-   profileImage,
+   profileImageURL,
    firstName,
    lastName,
    middleIntial,
-   specializtion,
+   jobTitle,
    description,
    numberOfComments,
    numberOfLikes,
@@ -44,13 +44,13 @@ const PostCard = ({
          <Header>
             <Btn onPress={navigateToUserProfile}>
                <UserInfo>
-                  <ProfileImage source={{ uri: profileImage }} />
+                  <ProfileImage source={{ uri: profileImageURL }} />
                   <UserName>
                      <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>
                         {firstName} 
                         {middleIntial !== null ? ` ${middleIntial}. ${lastName}` : ' ' + lastName}
                      </Text>
-                     <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14 }}>{specializtion}</Text>
+                     <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14, marginTop: 1 }}>{jobTitle}</Text>
                   </UserName>
                </UserInfo>
             </Btn>

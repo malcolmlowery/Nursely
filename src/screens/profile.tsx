@@ -69,7 +69,7 @@ const Profile = ({ navigation }: any) => {
                                  return(
                                     <PostCard 
                                        key={index}
-                                       profileImage='https://avatars.githubusercontent.com/u/100153203?v=4'
+                                       profileImageURL='https://avatars.githubusercontent.com/u/100153203?v=4'
                                        firstName='Malcolm'
                                        lastName='Lowery'
                                        middleIntial={middleIntial}
