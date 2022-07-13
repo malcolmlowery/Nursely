@@ -6,7 +6,7 @@ interface PostCardI {
    profileImageURL: string | undefined
    firstName: string
    lastName: string
-   middleIntial: string | null
+   middleIntial: string | undefined
    jobTitle: string | undefined
    description: string
    numberOfComments: number | undefined
@@ -48,7 +48,7 @@ const PostCard = ({
                   <UserName>
                      <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>
                         {firstName} 
-                        {middleIntial !== null ? ` ${middleIntial}. ${lastName}` : ' ' + lastName}
+                        {middleIntial !== undefined ? ` ${middleIntial}. ${lastName}` : ' ' + lastName}
                      </Text>
                      <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14, marginTop: 1 }}>{jobTitle}</Text>
                   </UserName>

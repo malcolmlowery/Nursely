@@ -39,6 +39,20 @@ export const fetchPosts = createAsyncThunk(
    }
 );
 
+export const createPost = createAsyncThunk(
+   'posts/createPost',
+   async (description: string) => {
+      const data = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
+         headers: { 'Content-Type': 'application/json' },
+         method: 'POST',
+         body: JSON.stringify({ "description": description })
+      })
+      .then(response => response.json())
+
+      return data
+   }
+);
+
 const initialState: PostsStateI = {
    loading: 'idle',
    posts: [],
@@ -62,6 +76,13 @@ export const postsSlice = createSlice({
          state.loading = 'succeeded'
          state.posts = []
          state.error = 'An error has occurred'
+      })
+      builder.addCase(createPost.fulfilled, (state, action) => {
+         state.posts.push({...action.payload})
+      })
+      builder.addCase(createPost.rejected, (state, action) => {
+         state.loading = 'failed'
+         state.error = 'Error creating post'
       })
    }
 });

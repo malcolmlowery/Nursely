@@ -1,7 +1,10 @@
 import styled from 'styled-components/native';
 import { Dimensions, Keyboard } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createPost } from '../data/posts.reducer';
+import { AppDispatch } from '../data/store';
 
 interface CreatePostI {
    navigation: any
@@ -14,6 +17,8 @@ const screenWidth = Dimensions.get('screen').width;
 const CreatePost = ({ navigation }: CreatePostI) => {
    const [isUploadingPost, setIsUploadingPost] = useState(false);
    const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+   const [text, setText] = useState('');
+   const dispatch = useDispatch<AppDispatch>();
 
    return(
       <Container>
@@ -46,9 +51,8 @@ const CreatePost = ({ navigation }: CreatePostI) => {
                   multiline={true} 
                   maxLength={1000} 
                   enablesReturnKeyAutomatically={true}
-                  onBlur={({ nativeEvent }) => {
-                     console.log(nativeEvent.target)
-                  }}
+                  onChangeText={(val) => setText(val)}
+                  onBlur={() => {}}
                />
                <ActionButtons>
                   <Button onPress={() => navigation.pop()}>
@@ -56,10 +60,11 @@ const CreatePost = ({ navigation }: CreatePostI) => {
                   </Button>
                   <Button onPress={() => {
                      setIsUploadingPost(true)
+                     dispatch(createPost(text))
                      setTimeout(() => {
                         setIsUploadingPost(false)
                         navigation.pop()
-                     }, 2000)
+                     }, 500)
                   }}>
                      <Text style={{ color: '#2c7eea', fontWeight: '500', fontSize: 16 }}>Post</Text>
                   </Button>
