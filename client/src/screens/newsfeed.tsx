@@ -4,7 +4,7 @@ import { HeaderHeightContext } from '@react-navigation/elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../data/store';
 import { Ionicons } from '@expo/vector-icons';
-import { fetchPosts, likePost } from '../data/posts.reducer'
+import { fetchPosts, likePost, updatePost } from '../data/posts.reducer'
 
 // Components
 import PostCard from '../components/PostCard';
@@ -73,6 +73,7 @@ const Newsfeed = ({ navigation }: any) => {
                                  navigateToComments={() => navigation.push('post-details', { postID })}
                                  handleLikePost={() => dispatch(likePost())}
                                  handleCommentOnPost={() => {}}
+											handleUpdatePost={(updatedText) => dispatch(updatePost({ description: updatedText, postID }))}
                                  style={{ marginBottom: 12 }}
                               />
                            )

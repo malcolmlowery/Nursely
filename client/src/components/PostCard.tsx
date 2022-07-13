@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 interface PostCardI {
    profileImageURL: string | undefined
@@ -17,7 +18,10 @@ interface PostCardI {
    navigateToComments?: () => void
    handleLikePost: () => void
    handleCommentOnPost: () => void
+   handleUpdatePost: (_: string) => void
    style?: any
+   isPostOwner: boolean,
+   editingPost: boolean
 };
 
 const screenWidth = Dimensions.get('screen').width;
@@ -37,8 +41,14 @@ const PostCard = ({
    navigateToComments,
    handleLikePost,
    handleCommentOnPost,
-   style
+   handleUpdatePost,
+   style,
+   isPostOwner = true,
    }: PostCardI) => {
+      const [toggleOptions, setToggleOptions] = useState(false);
+      const [isEditing, setIsEditing] = useState(false);
+      const [text, setText] = useState(description);
+
    return(
       <Container style={style}>
          <Header>
@@ -54,14 +64,57 @@ const PostCard = ({
                   </UserName>
                </UserInfo>
             </Btn>
-            <Btn>
-               <Ionicons name='ios-alert-circle' size={20} color='#B9B9B9' />
-            </Btn>
+            {  isPostOwner == true && toggleOptions == false &&
+               <Btn onPress={() => setToggleOptions(true)} style={{ top: 8 }}>
+                  <Ionicons name='options' size={20} color='#B9B9B9' />
+               </Btn>
+            }
+            { isPostOwner == false &&
+               <Btn style={{ top: 8 }}>
+                  <Ionicons name='ios-alert-circle' size={20} color='#B9B9B9' />
+               </Btn>
+            }
+            { toggleOptions == true &&
+               <EditButtonsContainer>
+                  { isEditing == true ?
+                     <Btn onPress={() => {
+                        setIsEditing(false)
+                        setToggleOptions(false)
+                     }} style={{ marginRight: 10, width: 42 }}>
+                        <Text style={{ alignSelf: 'center', color: '#D6493E' }}>Cancel</Text>
+                     </Btn>
+                  :
+                     <Btn style={{ marginRight: 10, width: 42 }}>
+                        <Text style={{ alignSelf: 'center', color: '#D6493E' }}>Delete</Text>
+                     </Btn>
+                  }
+                  <Btn onPress={() => setIsEditing(true)} style={{ width: 40 }}>
+                     <Text style={{ alignSelf: 'center' }}>Edit</Text>
+                  </Btn>
+                  <Btn onPress={() => {
+                     setToggleOptions(false)
+                     setIsEditing(false)
+                  }} style={{ marginLeft: 8 }}>
+                     <Ionicons name='options' size={20} color='#B9B9B9' />
+                  </Btn>
+               </EditButtonsContainer>
+            }
          </Header>
          <Content>
-            <Btn onPress={navigateToPostDetails}>
-               <Text style={{ color: '#272727', fontSize: 14, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
-            </Btn>
+            { isEditing == false ?
+               <Btn onPress={navigateToPostDetails}>
+                  <Text style={{ color: '#272727', fontSize: 14, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
+               </Btn>
+               :
+               <TextInput 
+                  defaultValue={description}
+                  multiline={true} 
+                  maxLength={1000} 
+                  enablesReturnKeyAutomatically={true}
+                  onChangeText={(val) => setText(val)}
+                  // onBlur={() => {}}
+               />
+            }
          </Content>
          <ActionButtons>
             <Btn onPress={navigateToComments}>
@@ -69,9 +122,19 @@ const PostCard = ({
             </Btn>
             <Text style={{ color: '#D6493E', fontWeight: '500', marginLeft: 12 }}>{numberOfLikes} likes</Text>
             <Spacer />
-            <CommentBtn onPress={handleCommentOnPost}>
-               <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Comment</Text>
-            </CommentBtn>
+            { isEditing ?
+               <CommentBtn onPress={() => {
+                  handleUpdatePost(text)
+                  setIsEditing(false)
+                  setToggleOptions(false)
+               }} style={{ backgroundColor: '#4CAF50'}}>
+                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Submit</Text>
+               </CommentBtn>
+            :
+               <CommentBtn onPress={handleCommentOnPost}>
+                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Comment</Text>
+               </CommentBtn>
+            }
             <Btn onPress={handleLikePost}>
                { postLiked === true ?
                   <Ionicons name='heart' size={38} color='#D6493E' /> 
@@ -105,6 +168,13 @@ const Spacer = styled.View`
 const Header = styled.View`
    flex-direction: row;
    justify-content: space-between;
+`;
+
+const EditButtonsContainer = styled.View`
+   align-items: center;
+   flex-direction: row;
+   justify-content: flex-end;
+   width: 100px;
 `;
 
 const UserInfo = styled.View`
@@ -142,4 +212,18 @@ const CommentBtn = styled.TouchableOpacity`
 `;
 
 const Btn = styled.TouchableOpacity`
+`;
+
+const TextInput = styled.TextInput`
+   background-color: #fcfcfc;
+   border-radius: 6px;
+   flex: 1;
+   line-height: 20.25px;
+   max-height: 300px;
+   margin-top: 16px;
+   padding-bottom: 20px;
+   padding-top: 16px;
+   padding-left: 20px;
+   padding-right: 10px;
+   top: -6px;
 `;

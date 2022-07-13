@@ -53,6 +53,20 @@ export const createPost = createAsyncThunk(
    }
 );
 
+export const updatePost = createAsyncThunk(
+   'posts/updatePost',
+   async (updatedData: any) => {
+      const data = await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${updatedData.postID}`, {
+         headers: { 'Content-Type': 'application/json' },
+         method: 'PUT',
+         body: JSON.stringify({ "description": updatedData.description })
+      })
+      .then(response => response.json())
+      console.log(data)
+      return data
+   }
+);
+
 const initialState: PostsStateI = {
    loading: 'idle',
    posts: [],
@@ -81,6 +95,23 @@ export const postsSlice = createSlice({
          state.posts.push({...action.payload})
       })
       builder.addCase(createPost.rejected, (state, action) => {
+         state.loading = 'failed'
+         state.error = 'Error creating post'
+      })
+      builder.addCase(updatePost.fulfilled, (state, action) => {
+         const { postID, description }: any = action.payload
+         console.log('sdsddssdsdsd', {postID, description})
+         state.posts = state.posts.map(post => {
+            if(post.postID === postID) {
+               return {
+                  ...post,
+                  description: description
+               }
+            }
+            return post
+         })
+      })
+      builder.addCase(updatePost.rejected, (state, action) => {
          state.loading = 'failed'
          state.error = 'Error creating post'
       })
