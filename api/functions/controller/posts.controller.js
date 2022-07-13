@@ -36,7 +36,7 @@ const getPost = ('/post', async (req, res) => {
 // Creates user posts
 const createPost = ('/', async (req, res) => {
    const uniqueID = await firestore.collection('posts').doc().id;
-   const userID = 'r6gIPFWLP5YTfXsz1QMq';
+   const userID = 'erHY5idyBp9CqwgGPzDD';
 
    const user = await firestore
       .collection('users')
@@ -65,7 +65,7 @@ const createPost = ('/', async (req, res) => {
          "numberOfLikes": 0,
          "postLiked": false
       })
-      .then(doc => {
+      .then(() => {
          res.send({
             "postID": uniqueID,
             "publisher": {...user},
@@ -80,8 +80,31 @@ const createPost = ('/', async (req, res) => {
       })
 });
 
+const updatePost = ('/post', async (req, res) => {
+   await firestore
+      .collection('posts')
+      .doc(req.query.postID)
+      .set({ description: req.body.description }, { merge: true })
+      .then(() => {
+         res.send({ description: req.body.description, postID: req.query.postID})
+      })
+      .catch(error => {
+         res.send(error)
+      })
+});
+
+const deletePost = ('/post', async (req, res) => {
+   await firestore
+      .collection('posts')
+      .doc(req.query.postID)
+      .delete()
+      .then(() => res.send({ "message": "Post was deleted"}))
+})
+
 module.exports = { 
    getPosts,
    getPost,
-   createPost
+   createPost,
+   updatePost,
+   deletePost,
 };
