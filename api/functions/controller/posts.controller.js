@@ -34,29 +34,46 @@ const getPost = ('/post', async (req, res) => {
 });
 
 // Creates user posts
-const createPost = ('/', async (_, res) => {
+const createPost = ('/', async (req, res) => {
    const uniqueID = await firestore.collection('posts').doc().id;
+   const userID = 'r6gIPFWLP5YTfXsz1QMq';
 
+   const user = await firestore
+      .collection('users')
+      .doc(userID)
+      .get()
+      .then((snapshot) => {
+         const user = snapshot.data();
+         return {
+            uid: userID,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            middleInital: user.middleInital,
+            profileImageURL: user.profilePhotoURL,
+            jobTitle: user.Occupation.jobTitle
+         }
+      })
+      
    await firestore
       .collection('posts')
       .doc(uniqueID)
       .create({
          "postID": uniqueID,
-         "publisher": {
-            "uid": "SR5cmJ0K0UsSWrdfCqxK",
-            "profileImageURL": "https://avatars.githubusercontent.com/u/100153203?v=4",
-            "firstName": "Malcolm",
-            "lastName": "Lowery",
-            "middleIntial": null,
-            "jobTitle": "Registered Nurse"
-         },
-         "description": "TEST",
+         "publisher": {...user},
+         "description": req.body.description,
          "numberOfComments": 0,
          "numberOfLikes": 0,
          "postLiked": false
       })
       .then(doc => {
-         res.send(doc)
+         res.send({
+            "postID": uniqueID,
+            "publisher": {...user},
+            "description": req.body.description,
+            "numberOfComments": 0,
+            "numberOfLikes": 0,
+            "postLiked": false
+         })
       })
       .catch(error => {
          res.send(error)
