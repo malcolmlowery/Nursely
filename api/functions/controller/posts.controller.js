@@ -1,19 +1,13 @@
-const express = require('express');
-const postsRouter = express.Router();
 const { firestore } = require('../firebase.modules')
 
-// Middleware for authentication still needs to be added
-// Get every user posts for the client Newsfeed screen
-postsRouter.get('/posts', async (_, res) => {
+// Get all user posts in posts collection
+const getPosts = ('/', async (_, res) => {
    await firestore
       .collection('posts')
       .get()
       .then(snapshot => {
          const posts = [];
-
-         snapshot.docs.forEach(doc => {
-            posts.push(doc.data())
-         })
+         snapshot.docs.forEach(doc => posts.push(doc.data()))
          res.send(posts)
       })
       .catch(error => {
@@ -21,8 +15,26 @@ postsRouter.get('/posts', async (_, res) => {
       })
 });
 
+// Get a single post along with its user comments
+const getPost = ('/post', async (req, res) => {
+   let postData;
+
+   await firestore
+      .collection('posts')
+      .doc(req.query.postID)
+      .get()
+      .then(snapshot => {
+         postData = snapshot.data()
+      })
+      .catch(error => {
+         res.send(error)
+      })
+
+     res.send({ "post": postData }) 
+});
+
 // Creates user posts
-postsRouter.post('/posts', async (_, res) => {
+const createPost = ('/', async (_, res) => {
    const uniqueID = await firestore.collection('posts').doc().id;
 
    await firestore
@@ -31,7 +43,7 @@ postsRouter.post('/posts', async (_, res) => {
       .create({
          "postID": uniqueID,
          "publisher": {
-            "uid": "Ym6B4zH0Xn4Mk0sHZKMF",
+            "uid": "SR5cmJ0K0UsSWrdfCqxK",
             "profileImageURL": "https://avatars.githubusercontent.com/u/100153203?v=4",
             "firstName": "Malcolm",
             "lastName": "Lowery",
@@ -51,4 +63,8 @@ postsRouter.post('/posts', async (_, res) => {
       })
 });
 
-module.exports = { postsRouter };
+module.exports = { 
+   getPosts,
+   getPost,
+   createPost
+};
