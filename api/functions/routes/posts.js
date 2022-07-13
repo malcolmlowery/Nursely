@@ -2,14 +2,16 @@ const express = require('express');
 const postsRouter = express.Router();
 const { firestore } = require('../firebase.modules')
 
-postsRouter.get('/posts', async (req, res) => {
+// Middleware for authentication still needs to be added
+// Get every user posts for the client Newsfeed screen
+postsRouter.get('/posts', async (_, res) => {
    await firestore
       .collection('posts')
       .get()
       .then(snapshot => {
          const posts = [];
 
-         snapshot.docs.map(doc => {
+         snapshot.docs.forEach(doc => {
             posts.push(doc.data())
          })
          res.send(posts)
@@ -19,7 +21,8 @@ postsRouter.get('/posts', async (req, res) => {
       })
 });
 
-postsRouter.post('/posts', async (req, res) => {
+// Creates user posts
+postsRouter.post('/posts', async (_, res) => {
    const uniqueID = await firestore.collection('posts').doc().id;
 
    await firestore
@@ -28,18 +31,18 @@ postsRouter.post('/posts', async (req, res) => {
       .create({
          "postID": uniqueID,
          "publisher": {
-            "uid": "zg79b21rjbfuc9cg273h2in1br2e98h8g7",
+            "uid": "Ym6B4zH0Xn4Mk0sHZKMF",
             "profileImageURL": "https://avatars.githubusercontent.com/u/100153203?v=4",
             "firstName": "Malcolm",
             "lastName": "Lowery",
             "middleIntial": null,
             "jobTitle": "Registered Nurse"
          },
-         "description": "Have you slimmed some things down because you don't have time? Is there something you always include? Something you assess that you know your colleagues do but you fee compelled to look at?",
-         "numberOfComments": 1,
-         "numberOfLikes": 2,
+         "description": "TEST",
+         "numberOfComments": 0,
+         "numberOfLikes": 0,
          "postLiked": false
-      },)
+      })
       .then(doc => {
          res.send(doc)
       })
