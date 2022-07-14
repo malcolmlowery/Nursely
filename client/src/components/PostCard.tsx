@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
+import { Alert, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 
@@ -19,6 +19,7 @@ interface PostCardI {
    handleLikePost: () => void
    handleCommentOnPost: () => void
    handleUpdatePost: (_: string) => void
+   handleDeletePost: (_: string) => void
    style?: any
    isPostOwner: boolean,
    editingPost: boolean
@@ -42,6 +43,7 @@ const PostCard = ({
    handleLikePost,
    handleCommentOnPost,
    handleUpdatePost,
+   handleDeletePost,
    style,
    isPostOwner = true,
    }: PostCardI) => {
@@ -84,7 +86,17 @@ const PostCard = ({
                         <Text style={{ alignSelf: 'center', color: '#D6493E' }}>Cancel</Text>
                      </Btn>
                   :
-                     <Btn style={{ marginRight: 10, width: 42 }}>
+                     <Btn onPress={() => {
+                        Alert.alert('Delete Post', 'Are you sure?', [
+                           {
+                              text: 'Cancel',
+                              style: 'cancel'
+                           },
+                           {
+                              text: 'OK', onPress: () => handleDeletePost(),
+                           }
+                        ])
+                     }} style={{ marginRight: 10, width: 42 }}>
                         <Text style={{ alignSelf: 'center', color: '#D6493E' }}>Delete</Text>
                      </Btn>
                   }

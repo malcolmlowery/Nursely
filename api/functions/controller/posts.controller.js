@@ -2,17 +2,37 @@ const { firestore } = require('../firebase.modules')
 
 // Get all user posts in posts collection
 const getPosts = ('/', async (_, res) => {
-   await firestore
+   const likedPostIDs = await firestore
+      .collection('likes')
+      .where('userLikes', 'array-contains', 'FRbhgBU60CjtLaZ8wTox')
+      .get()
+      .then(snapshot => {
+         const postIDs = [];
+         snapshot.docs.forEach(doc => postIDs.push(doc.data().postID))
+         return postIDs;
+      })
+
+   const allPosts = await firestore
       .collection('posts')
       .get()
       .then(snapshot => {
          const posts = [];
          snapshot.docs.forEach(doc => posts.push(doc.data()))
-         res.send(posts)
+         return posts;
       })
       .catch(error => {
          res.send(error)
       })
+   
+   const posts = allPosts.map(post => {
+      const postID = likedPostIDs.find(postID => postID == post.postID)
+      if(post.postID === postID) {
+         return { ...post, postLiked: true }
+      }
+      return post
+   })
+   
+   res.send(posts)
 });
 
 // Get a single post along with its user comments
@@ -36,7 +56,7 @@ const getPost = ('/post', async (req, res) => {
 // Creates user posts
 const createPost = ('/', async (req, res) => {
    const uniqueID = await firestore.collection('posts').doc().id;
-   const userID = 'erHY5idyBp9CqwgGPzDD';
+   const userID = 'FRbhgBU60CjtLaZ8wTox';
 
    const user = await firestore
       .collection('users')
@@ -65,15 +85,29 @@ const createPost = ('/', async (req, res) => {
          "numberOfLikes": 0,
          "postLiked": false
       })
-      .then(() => {
-         res.send({
-            "postID": uniqueID,
-            "publisher": {...user},
-            "description": req.body.description,
-            "numberOfComments": 0,
-            "numberOfLikes": 0,
-            "postLiked": false
-         })
+      .then(async () => {
+
+         await firestore
+            .collection('likes')
+            .doc(uniqueID)
+            .create({
+               "postID": uniqueID,
+               "userLikes": []
+            })
+            .then(() =>  {
+               res.send({
+                  "postID": uniqueID,
+                  "publisher": {...user},
+                  "description": req.body.description,
+                  "numberOfComments": 0,
+                  "numberOfLikes": 0,
+                  "postLiked": false
+               })
+            })
+            .catch(error => {
+               res.send(error)
+            })
+
       })
       .catch(error => {
          res.send(error)
@@ -98,13 +132,17 @@ const deletePost = ('/post', async (req, res) => {
       .collection('posts')
       .doc(req.query.postID)
       .delete()
-      .then(() => res.send({ "message": "Post was deleted"}))
+      .then(() => res.send({ postID: req.query.postID }))
+      .catch(error => {
+         res.send(error)
+      })
 })
+
 
 module.exports = { 
    getPosts,
    getPost,
    createPost,
    updatePost,
-   deletePost,
+   deletePost
 };

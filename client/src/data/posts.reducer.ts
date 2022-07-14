@@ -24,13 +24,6 @@ interface PostsStateI {
    error: string | null
 };
 
-export const likePost = createAsyncThunk(
-   'post/likePost',
-   async () => {
-      
-   }
-);
-
 export const fetchPosts = createAsyncThunk(
    'posts/fetchPosts',
    async () => {
@@ -42,28 +35,50 @@ export const fetchPosts = createAsyncThunk(
 export const createPost = createAsyncThunk(
    'posts/createPost',
    async (description: string) => {
-      const data = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
+      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
          headers: { 'Content-Type': 'application/json' },
          method: 'POST',
          body: JSON.stringify({ "description": description })
       })
-      .then(response => response.json())
-
-      return data
+      .then(response => response.json()))
    }
 );
 
 export const updatePost = createAsyncThunk(
    'posts/updatePost',
    async (updatedData: any) => {
-      const data = await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${updatedData.postID}`, {
+      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${updatedData.postID}`, {
          headers: { 'Content-Type': 'application/json' },
          method: 'PUT',
          body: JSON.stringify({ "description": updatedData.description })
       })
-      .then(response => response.json())
-      console.log(data)
-      return data
+      .then(response => response.json()))
+   }
+);
+
+export const likePost = createAsyncThunk(
+   'posts/likePost',
+   async (postID: string) => {
+      const uid = 'FRbhgBU60CjtLaZ8wTox';
+      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/likes?postID=${postID}`, {
+         headers: { 'Content-Type': 'application/json' },
+         method: 'POST',
+         body: JSON.stringify({ uid })
+      })
+      .then(response => response.json()))
+   }
+);
+
+export const deletePost = createAsyncThunk(
+   'posts/deletePost',
+   async (postID: string) => {
+      const uid = 'FRbhgBU60CjtLaZ8wTox';
+      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${postID}`, {
+         headers: { 'Content-Type': 'application/json' },
+         method: 'DELETE',
+         body: JSON.stringify({ uid })
+      })
+      .then(response => response.json()))
    }
 );
 
@@ -100,7 +115,6 @@ export const postsSlice = createSlice({
       })
       builder.addCase(updatePost.fulfilled, (state, action) => {
          const { postID, description }: any = action.payload
-         console.log('sdsddssdsdsd', {postID, description})
          state.posts = state.posts.map(post => {
             if(post.postID === postID) {
                return {
@@ -114,6 +128,30 @@ export const postsSlice = createSlice({
       builder.addCase(updatePost.rejected, (state, action) => {
          state.loading = 'failed'
          state.error = 'Error creating post'
+      })
+      builder.addCase(likePost.fulfilled, (state, action) => {
+         const { postLiked, postID }: any = action.payload
+
+         state.posts = state.posts.map(post => {
+            if(post.postID === postID && postLiked === true) {
+               return {
+                  ...post,
+                  postLiked: true,
+                  numberOfLikes: post.numberOfLikes + 1
+               }
+            } else if(post.postID === postID && postLiked === false) {
+               return {
+                  ...post,
+                  postLiked: false,
+                  numberOfLikes: post.numberOfLikes - 1
+               }
+            }
+            return post
+         })
+      })
+      builder.addCase(deletePost.fulfilled, (state, action) => {
+         const { postID }: any = action.payload
+         state.posts = state.posts.filter(post => post.postID !== postID)
       })
    }
 });
