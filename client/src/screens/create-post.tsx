@@ -3,8 +3,9 @@ import { Dimensions, Keyboard } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createPost } from '../data/posts.reducer';
+import { createPost } from '../data/posts/post.actions';
 import { AppDispatch } from '../data/store';
+import { createUser } from '../data/user/user.actions';
 
 interface CreatePostI {
    navigation: any

@@ -1,10 +1,8 @@
-require('dotenv').config();
-const app = require('express')();
-const { admin, functions } = require('./firebase.modules');
-const serviceAccount = require('../serviceAccountKey.json');
-const rootRouter = require('./routes/index');
+const { admin } = require('./firebase.modules');
+const { createUser, updateUser, deleteUser } = require("./endpoints/user");
+const { createPost, updatePost } = require("./endpoints/post");
 
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-app.use('/', rootRouter);
+admin.initializeApp()
 
-exports.api = functions.https.onRequest(app);
+exports.user = { createUser, updateUser, deleteUser }
+exports.post = { createPost, updatePost  }

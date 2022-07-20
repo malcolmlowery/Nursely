@@ -7,9 +7,6 @@ import { Ionicons } from '@expo/vector-icons';
 // Components
 import PostCard from '../components/PostCard';
 
-// User posts placeholder data
-import fakeData from '../data/fake-database-collections/fakeData.json';
-
 const Profile = ({ navigation }: any) => {
 
    useLayoutEffect(() => {
@@ -24,7 +21,7 @@ const Profile = ({ navigation }: any) => {
             return(
                <SafeAreaView style={{ flex: 1, marginBottom: headerHeight * 1.75, top: headerHeight }}>
                      <ScrollView>
-                        <Header>
+                        {/* <Header>
                            <BannerImage source={{ uri: 'https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2020/11/10/1005/Hyatt-Centric-Las-Olas-Fort-Lauderdale-P038-Dusk-Hotel.jpg/Hyatt-Centric-Las-Olas-Fort-Lauderdale-P038-Dusk-Hotel.16x9.jpg?imwidth=1920' }} />
                            <ProfileImage style={{ top: -headerHeight + 40 }} source={{ uri: 'https://avatars.githubusercontent.com/u/100153203?v=4' }} />
                         </Header>
@@ -99,7 +96,7 @@ const Profile = ({ navigation }: any) => {
                                  )
                               })}
                            </UserPosts>
-                        </Content>
+                        </Content> */}
                      </ScrollView>
                </SafeAreaView>
             )

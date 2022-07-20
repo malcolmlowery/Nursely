@@ -5,9 +5,7 @@ import { useState } from 'react';
 
 interface PostCardI {
    profileImageURL: string | undefined
-   firstName: string
-   lastName: string
-   middleIntial: string | undefined
+   username: string
    jobTitle: string | undefined
    description: string
    numberOfComments: number | undefined
@@ -17,21 +15,19 @@ interface PostCardI {
    navigateToPostDetails?: () => void
    navigateToComments?: () => void
    handleLikePost: () => void
-   handleCommentOnPost: () => void
+   handlePostCommentResponse: (_: string) => void
    handleUpdatePost: (_: string) => void
    handleDeletePost: (_: string) => void
    style?: any
    isPostOwner: boolean,
-   editingPost: boolean
+   editingPost?: boolean,
 };
 
 const screenWidth = Dimensions.get('screen').width;
 
-const PostCard = ({ 
+const PostCard = ({
    profileImageURL,
-   firstName,
-   lastName,
-   middleIntial,
+   username,
    jobTitle,
    description,
    numberOfComments,
@@ -41,7 +37,7 @@ const PostCard = ({
    navigateToPostDetails,
    navigateToComments,
    handleLikePost,
-   handleCommentOnPost,
+   handlePostCommentResponse,
    handleUpdatePost,
    handleDeletePost,
    style,
@@ -50,6 +46,8 @@ const PostCard = ({
       const [toggleOptions, setToggleOptions] = useState(false);
       const [isEditing, setIsEditing] = useState(false);
       const [text, setText] = useState(description);
+      const [commentTextInputActive,setCommentTextInputActive] = useState(false)
+      const [commentText, setCommentText] = useState('');
 
    return(
       <Container style={style}>
@@ -58,10 +56,7 @@ const PostCard = ({
                <UserInfo>
                   <ProfileImage source={{ uri: profileImageURL }} />
                   <UserName>
-                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>
-                        {firstName} 
-                        {middleIntial !== undefined ? ` ${middleIntial}. ${lastName}` : ' ' + lastName}
-                     </Text>
+                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>{username}</Text>
                      <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14, marginTop: 1 }}>{jobTitle}</Text>
                   </UserName>
                </UserInfo>
@@ -118,10 +113,10 @@ const PostCard = ({
                   <Text style={{ color: '#272727', fontSize: 14, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
                </Btn>
                :
-               <TextInput 
+               <TextInput
                   defaultValue={description}
-                  multiline={true} 
-                  maxLength={1000} 
+                  multiline={true}
+                  maxLength={1000}
                   enablesReturnKeyAutomatically={true}
                   onChangeText={(val) => setText(val)}
                   // onBlur={() => {}}
@@ -135,26 +130,62 @@ const PostCard = ({
             <Text style={{ color: '#D6493E', fontWeight: '500', marginLeft: 12 }}>{numberOfLikes} likes</Text>
             <Spacer />
             { isEditing ?
-               <CommentBtn onPress={() => {
-                  handleUpdatePost(text)
-                  setIsEditing(false)
-                  setToggleOptions(false)
-               }} style={{ backgroundColor: '#4CAF50'}}>
+               <CommentBtn
+                  onPress={() => {
+                     handleUpdatePost(text)
+                     setIsEditing(false)
+                     setToggleOptions(false)
+                  }}
+                  style={{ backgroundColor: '#4CAF50'}}>
                   <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Submit</Text>
                </CommentBtn>
             :
-               <CommentBtn onPress={handleCommentOnPost}>
-                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Comment</Text>
+               <CommentBtn
+                  style={{ backgroundColor: commentTextInputActive ? '#D6493E' : '#5F5BFF' }}
+                  onPress={() => {
+                     if(commentTextInputActive == true) setCommentTextInputActive(false)
+                     if(commentTextInputActive == false) setCommentTextInputActive(true)
+                  }}>
+                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>
+                     { commentTextInputActive ? 'Cancel' : 'Comment' }
+                  </Text>
                </CommentBtn>
             }
             <Btn onPress={handleLikePost}>
                { postLiked === true ?
-                  <Ionicons name='heart' size={38} color='#D6493E' /> 
+                  <Ionicons name='heart' size={38} color='#D6493E' />
                   :
                   <Ionicons name='heart' size={38} color='#DEDEDE' />
                }
             </Btn>
          </ActionButtons>
+         { commentTextInputActive &&
+            <>
+               <TextInput
+                  placeholder='What do you have to say?'
+                  multiline={true}
+                  maxLength={1000}
+                  enablesReturnKeyAutomatically={true}
+                  value={commentText}
+                  onChangeText={val => setCommentText(val)}
+               />
+               <CommentBtn
+                  onPress={() => {
+                     handlePostCommentResponse(commentText)
+                     setIsEditing(false)
+                     setToggleOptions(false)
+                  }}
+                  style={{
+                     backgroundColor: '#4CAF50',
+                     borderRadius: 6, width: 340,
+                     marginRight: 0,
+                     marginTop: 4,
+                     alignItems: 'center'
+                  }}>
+                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Post Response</Text>
+               </CommentBtn>
+            </>
+         }
       </Container>
    )
 };

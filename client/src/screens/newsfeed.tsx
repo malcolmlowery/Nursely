@@ -4,7 +4,7 @@ import { HeaderHeightContext } from '@react-navigation/elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../data/store';
 import { Ionicons } from '@expo/vector-icons';
-import { deletePost, fetchPosts, likePost, updatePost } from '../data/posts.reducer'
+import { deletePost, fetchPosts, likePost, postCommentResponse, updatePost } from '../data/posts/post.actions'
 
 // Components
 import PostCard from '../components/PostCard';
@@ -40,18 +40,14 @@ const Newsfeed = ({ navigation }: any) => {
                            const {
                               uid,
                               profileImageURL,
-                              firstName,
-                              lastName,
-                              middleIntial,
+                              username,
                               jobTitle,
                            } = publisher;
                            
                            return(
                               <PostCard 
                                  profileImageURL={profileImageURL}
-                                 firstName={firstName}
-                                 lastName={lastName}
-                                 middleIntial={middleIntial}
+                                 username={username}
                                  jobTitle={jobTitle}
                                  description={description}
                                  numberOfComments={numberOfComments}
@@ -61,19 +57,18 @@ const Newsfeed = ({ navigation }: any) => {
                                  navigateToPostDetails={() => navigation.push('post-details', {
                                     postID,
                                     profileImageURL,
-                                    firstName,
-                                    lastName,
-                                    middleIntial,
+                                    username,
                                     jobTitle,
                                     description,
                                     numberOfComments,
                                     numberOfLikes,
                                     postLiked,
                                  })}
+											isPostOwner={true}
                                  navigateToComments={() => navigation.push('post-details', { postID })}
                                  handleLikePost={() => dispatch(likePost(postID))}
-                                 handleCommentOnPost={() => {}}
-											handleUpdatePost={(updatedText) => dispatch(updatePost({ description: updatedText, postID }))}
+                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, postID }))}
+											handleUpdatePost={(updatedDescription) => dispatch(updatePost({ description: updatedDescription, postID }))}
 											handleDeletePost={() => dispatch(deletePost(postID))}
                                  style={{ marginBottom: 12 }}
                               />
