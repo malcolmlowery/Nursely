@@ -30,7 +30,14 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
          occupation: {...occupation}
       })
 
-   res.send(user)
+   res.send({
+      uid,
+      displayName,
+      photoURL,
+      email,
+      emailVerified,
+      occupation: { ...occupation }
+   })
 })
 
 exports.updateUser = functions.https.onRequest(async (req, res) => {
