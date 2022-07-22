@@ -153,5 +153,5 @@ exports.likePost = functions.https.onRequest(async (req, res) => {
          likesByUserUid: uidExists === undefined ? FieldValue.arrayUnion(uid) : FieldValue.arrayRemove(uid)
       }, { merge: true })
 
-   res.send({ postId, postLiked: true })
+   res.send({ postId, postLiked: uidExists === undefined ? true : false })
 })

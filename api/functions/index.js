@@ -1,6 +1,9 @@
 const { admin } = require('./firebase.modules');
-const { createUser, updateUser, deleteUser } = require("./endpoints/user");
-const { createCommentOnPost } = require("./endpoints/comments");
+const { 
+   createUser, 
+   updateUser, 
+   deleteUser 
+} = require("./endpoints/user");
 const { 
    createPost, 
    getPost, 
@@ -8,11 +11,20 @@ const {
    deletePost, 
    likePost 
 } = require("./endpoints/post");
+const { 
+   createComment,
+   updateComment,
+   deleteComment 
+} = require("./endpoints/comments");
 
 admin.initializeApp()
 
 exports.user = { createUser, updateUser, deleteUser }
-exports.comments = { createCommentOnPost}
+exports.comments = { 
+   createComment,
+   updateComment,
+   deleteComment
+}
 exports.post = { 
    createPost, 
    getPost, 

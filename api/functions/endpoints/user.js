@@ -93,6 +93,24 @@ exports.updateUser = functions.https.onRequest(async (req, res) => {
             }, { merge: true })
          })         
       })
+   
+   await firestore()
+      .collection('comments')
+      .get()
+      .then(async (snapshot) => {
+         await snapshot.docs.forEach(doc => {
+            doc.ref.collection('responses')
+               .where('uid', '==', uid)
+               .get()
+               .then(async (user) => {
+                  await user.docs.forEach(doc => doc.ref.set({ 
+                     displayName: updatedUserInfo.displayName,
+                     photoURL: updatedUserInfo.photoURL,
+                     jobTitle: jobTitle != undefined ? jobTitle : user.occupation.jobTitle,
+                   }, { merge: true }))
+               })
+         })         
+      })
 
    res.send({ message: 'User data updated in all database collection!' })
 })
