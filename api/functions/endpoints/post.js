@@ -136,8 +136,18 @@ exports.likePost = functions.https.onRequest(async (req, res) => {
       .collection('likes')
       .doc(likesIdRef)
       .get()
-      .then((doc) => doc.data().likesByUserUid.find(id => id === uid))
+      .then(doc => doc.data().likesByUserUid.find(id => id === uid))
 
+   await firestore()
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then(async (doc) => {
+         const postLiked = doc.data().userPostLikes.find(id => id === postId)
+         await doc.ref.set({
+            userPostLikes: postLiked === undefined ? FieldValue.arrayUnion(postId) : FieldValue.arrayRemove(postId)
+         }, { merge: true })
+      })
 
    await firestore()
       .collection('posts')

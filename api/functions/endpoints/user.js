@@ -18,7 +18,7 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
       emailVerified: false,
    })
    
-   const user = await firestore()
+   await firestore()
       .collection('users')
       .doc(uid)
       .create({
@@ -27,7 +27,8 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
          photoURL,
          email,
          emailVerified,
-         occupation: {...occupation}
+         occupation: {...occupation},
+         userPostLikes: []
       })
 
    res.send({
