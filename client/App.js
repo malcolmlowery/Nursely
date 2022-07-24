@@ -5,20 +5,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { auth, onAuthStateChanged, signOut } from '../firebase.config';
+import { auth, onAuthStateChanged, signOut } from './firebase.config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Screens
-import Newsfeed from './screens/newsfeed';
-import Notifications from './screens/notifications';
-import Messages from './screens/messages';
-import Settings from './screens/settings';
-import PostDetails from './screens/post-details';
-import Profile from './screens/profile';
-import CreatePost from './screens/create-post';
-import Message from './screens/message';
-import Login from './screens/login';
-import SignUp from './screens/signup';
+import Newsfeed from './src/screens/newsfeed';
+import Notifications from './src/screens/notifications';
+import Messages from './src/screens/messages';
+import Settings from './src/screens/settings';
+import PostDetails from './src/screens/post-details';
+import Profile from './src/screens/profile';
+import CreatePost from './src/screens/create-post';
+import Message from './src/screens/message';
+import Login from './src/screens/login';
+import SignUp from './src/screens/signup';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

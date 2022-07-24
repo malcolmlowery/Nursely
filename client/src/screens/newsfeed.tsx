@@ -9,6 +9,7 @@ import { fetchPosts, updatePost, deletePost, likePost, createNewComment } from '
 
 // Components
 import PostCard from '../components/PostCard/PostCard';
+import { Platform } from 'react-native';
 
 const Newsfeed = ({ navigation }: any) => {
 	const posts = useSelector((state: RootState) => state.postSlice.posts);
@@ -24,7 +25,7 @@ const Newsfeed = ({ navigation }: any) => {
 			{(headerHeight: any) => {
 				return(
 					<>
-						<Container style={{ marginBottom: headerHeight }}>
+						<Container style={{ marginBottom: Platform.OS !== 'web' ? headerHeight : 0 }}>
 							<FlatList 
 								showsVerticalScrollIndicator={false}
 								data={posts}
@@ -78,7 +79,7 @@ const Newsfeed = ({ navigation }: any) => {
                            )
                         }}
 								keyExtractor={(item: any) => item.postId}
-								style={{ top: headerHeight, overflow: 'visible' }}
+								style={{ top: Platform.OS !== 'web' ? headerHeight : 30, overflow: 'visible' }}
 								contentInset={{ bottom: 70, top: 0 }}
 								refreshing={refreshing}
 								onRefresh={() => {

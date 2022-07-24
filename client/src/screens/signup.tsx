@@ -72,7 +72,7 @@ const Content = styled.View`
    background: #fff;
    border-radius: 30px;
    padding: 26px;
-   width: ${screenWidth - 40}px;
+   width: ${Platform.OS === 'web' ? 300 : screenWidth - 40}px;
 `;
 
 const InputGroup = styled.View`
