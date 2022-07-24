@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { deletePost, fetchPosts, likePost, postCommentResponse, updatePost } from '../data/posts/post.actions'
 
 // Components
-import PostCard from '../components/PostCard';
+import PostCard from '../components/PostCard/PostCard';
 
 const Newsfeed = ({ navigation }: any) => {
 	const posts = useSelector((state: RootState) => state.posts.posts);
@@ -49,7 +49,7 @@ const Newsfeed = ({ navigation }: any) => {
                            return(
                               <PostCard 
                                  profileImageURL={photoURL}
-                                 username={displayName}
+                                 displayName={displayName}
                                  jobTitle={jobTitle}
                                  description={description}
                                  numberOfComments={numberOfComments}
@@ -68,8 +68,8 @@ const Newsfeed = ({ navigation }: any) => {
                                  })}
 											isPostOwner={true}
                                  navigateToComments={() => navigation.push('post-details', { postId })}
-                                 handleLikePost={() => dispatch(likePost(postId))}
-                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, postId }))}
+                                 handleLikePost={() => dispatch(likePost({ postId, likesIdRef }))}
+                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, commentIdRef }))}
 											handleUpdatePost={(updatedDescription) => dispatch(updatePost({ description: updatedDescription, postId }))}
 											handleDeletePost={() => dispatch(deletePost({ postId, commentIdRef, likesIdRef }))}
                                  style={{ marginBottom: 12 }}

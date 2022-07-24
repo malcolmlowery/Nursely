@@ -1,17 +1,20 @@
 import styled from 'styled-components/native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { auth, signInWithEmailAndPassword } from '../../firebase.config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../data/store';
+import { loginUser } from '../data/user/user.actions';
 
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
  
-const Login = ({ navigation }) => {
+const Login = ({ navigation }: any) => {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const dispatch = useDispatch<AppDispatch>();
 
    return(
       <Container>
@@ -28,10 +31,12 @@ const Login = ({ navigation }) => {
             <Text style={{ color: '#fff', marginBottom: 30, fontSize: 52, fontWeight: '600'}}>Nursely</Text>
             <Content>
                <Text style={{ color: '#252525', fontSize: 30, fontWeight: '600'}}>Login</Text>
+
                <InputGroup style={{ marginTop: 20 }}>
                   <Ionicons name='mail' color='#d8d8d8' size={32} />
                   <TextInput placeholder='email' value={email} onChangeText={(val) => setEmail(val)} />
                </InputGroup>
+
                <InputGroup style={{ marginTop: 12 }}>
                   <Ionicons name='lock-closed' color='#d8d8d8' size={32} />
                   <TextInput 
@@ -42,16 +47,13 @@ const Login = ({ navigation }) => {
                      onChangeText={(val) => setPassword(val)}
                   />
                </InputGroup>
-               <Button style={{ marginTop: 30, padding: 14 }} onPress={() => {
-                  signInWithEmailAndPassword(auth, email, password)
-                  .then(async ({ user }) => {
-                     await user.getIdToken(true)
-                        .then(token => AsyncStorage.setItem('token', token))
-                  })
-                  .catch(error => console.log(error))
-               }}>
+
+               <Button 
+                  style={{ marginTop: 30, padding: 14 }} 
+                  onPress={() => dispatch(loginUser({ email, password }))}>
                   <Text style={{ color: '#fff', fontWeight: '600' }}>Submit</Text>
                </Button>
+               
                <Button onPress={() => navigation.push('sign-up')} style={{ backgroundColor: 'transparent', marginTop: 20, padding: 6 }}>
                   <Text>Need an account?</Text>
                </Button>

@@ -44,15 +44,26 @@ export const createUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
    'user/login',
-   async ({email, password}: any) => {
+   async ({ email, password }: any) => {
 
-      const user: any = await signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
          .then(({ user }) => user)
          .catch(error => console.log(error))
 
       await auth.currentUser?.getIdToken(true)
-      .then(async (token) => {
-         await AsyncStorage.setItem('token', token)
-      })
+         .then(async (token) => {
+            await AsyncStorage.setItem('token', token)
+         })
    }
 );
+
+// const userData = {
+//    firstName: 'Sarah',
+//    lastName: 'Downy',
+//    email: 'Sarah.developer@gmail.com',
+//    password: '123456',
+//    photoURL: 'https://media.istockphoto.com/photos/confident-medical-student-wearing-medical-scrubs-picture-id1309503232?b=1&k=20&m=1309503232&s=170667a&w=0&h=_jd0bJlaRdJdwBY8bsaP_4-vtjX2Sm2N8v9BXBydbbU=',
+//    jobTitle: 'Pediatrician',
+//    specializations: ['Oncology', 'Pediatrics', 'Anesthesiology'],
+//    hospitalName: 'Delray Medical Center'
+// }

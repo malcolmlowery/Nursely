@@ -3,7 +3,7 @@ const { firestore, admin } = require('../firebase.modules');
 exports.createComment = async (req, res) => {
    const uid = res.locals.uid;
    const commentIdRef = req.body.commentIdRef;
-   const response = req.body.response;
+   const comment = req.body.comment;
 
    const user = await firestore()
       .collection('users')
@@ -28,7 +28,7 @@ exports.createComment = async (req, res) => {
          displayName: user.displayName,
          jobTitle: user.occupation.jobTitle,
          photoURL: user.photoURL,
-         response,
+         comment,
       })
 
    res.send({
@@ -37,7 +37,7 @@ exports.createComment = async (req, res) => {
       displayName: user.displayName,
       jobTitle: user.occupation.jobTitle,
       photoURL: user.photoURL,
-      response,
+      comment,
    })
 }
 

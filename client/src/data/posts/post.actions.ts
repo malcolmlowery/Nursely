@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getFunctions, httpsCallableFromURL, auth } from '../../../firebase.config';
 
 export const fetchPosts = createAsyncThunk(
    'posts/fetchPosts',
@@ -23,7 +22,7 @@ export const createPost = createAsyncThunk(
    'posts/createPost',
    async (description: string) => {
       const token = await AsyncStorage.getItem('token')
-      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
+      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/post', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
@@ -37,15 +36,15 @@ export const createPost = createAsyncThunk(
 
 export const updatePost = createAsyncThunk(
    'posts/updatePost',
-   async ({ postID, description }: any) => {
+   async ({ postId, description }: any) => {
       const token = await AsyncStorage.getItem('token')
-      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${postID}`, {
+      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/post', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
          },
          method: 'PUT',
-         body: JSON.stringify({ description })
+         body: JSON.stringify({ postId, description })
       })
       .then(response => response.json()))
    }
@@ -72,14 +71,15 @@ export const deletePost = createAsyncThunk(
 
 export const likePost = createAsyncThunk(
    'posts/likePost',
-   async (postID: string) => {
+   async ({ postId, likesIdRef }: any) => {
       const token = await AsyncStorage.getItem('token')
-      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/likes?postID=${postID}`, {
+      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/like-post', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
          },
-         method: 'POST'
+         method: 'POST',
+         body: JSON.stringify({ postId, likesIdRef })
       })
       .then(response => response.json()))
    }
@@ -87,34 +87,18 @@ export const likePost = createAsyncThunk(
 
 export const postCommentResponse = createAsyncThunk(
    'posts/comments',
-   async ({comment, postID}: any) => {
+   async ({ comment, commentIdRef }: any) => {
       const token = await AsyncStorage.getItem('token')
-      const data = await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/comments`, {
+      const data = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/comment', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
          },
          method: 'POST',
-         body: JSON.stringify({ comment, postID })
+         body: JSON.stringify({ comment, commentIdRef })
       })
       .then(response => response.json())
 
       return console.log(data)
-   }
-);
-
-// Fetchs a single post and returns with all user comments
-export const fetchPost = createAsyncThunk(
-   'posts/getPost',
-   async (postID) => {
-      const token = await AsyncStorage.getItem('token')
-      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${postID}`, {
-         headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-         },
-         method: 'GET',
-      })
-      .then(response => response.json()))
    }
 );

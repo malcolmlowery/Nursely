@@ -1,45 +1,62 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
+import { useEffect } from 'react';
 import { HeaderHeightContext } from '@react-navigation/elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../data/store';
+import { fetchPost } from '../data/post/post.actions';
+import { CommentI, PostI } from '../data/post/post.interface';
 
 // Components
-import PostCard from '../components/PostCard';
+import PostCard from '../components/PostCard/PostCard';
 import ListItem from '../components/ListItem';
 
 const PostDetails = ({ navigation, route }: any) => {
+	const state = useSelector((state: RootState) => state.post);
+	const dispatch = useDispatch<AppDispatch>();
+	const { postId	} = route.params;
+
+	useEffect(() => {
+		dispatch(fetchPost(postId))
+	}, [])
+
 	const {
-		uid,
-		profileImageURL,
-		firstName,
-		lastName,
-		middleIntial,
-		jobTitle,
+		// likesIdRef,
+		// commentIdRef,
 		description,
 		numberOfComments,
 		numberOfLikes,
-		postLiked,
-	} = route.params;
+		publisher
+	}: PostI = state.post;
 
 	const renderCommentItem = ({ item }: any) => {
+
 		const {
-			uid,
-			profileImageURL,
-			username,
-			response,
-			reponsedLiked,
-			numberOfLikes,
-			navigateToUserProfile,
-			handleLikeResponsed
-		} = item;
+			responseId,
+			comment,
+			displayName,
+			jobTitle,
+			photoURL
+		}: CommentI = item;
+
+		// const {
+		// 	uid,
+		// 	profileImageURL,
+		// 	username,
+		// 	response,
+		// 	reponsedLiked,
+		// 	numberOfLikes,
+		// 	navigateToUserProfile,
+		// 	handleLikeResponsed
+		// } = item;
 
 		return(
 			<ListItem 
-				uid={uid}
-				profileImage={profileImageURL}
-				username={username}
-				response={response}
-				reponsedLiked={reponsedLiked}
-				numberOfLikes={numberOfLikes}
+				// uid={uid}
+				profileImage={photoURL}
+				username={displayName}
+				response={comment}
+				reponsedLiked={false}
+				numberOfLikes={0}
 				navigateToUserProfile={() => {}}
 				handleLikeResponsed={() => {}}
 			/>
@@ -53,16 +70,14 @@ const PostDetails = ({ navigation, route }: any) => {
 				<>
 				<Container style={{  }}>
 					<PostCard 
-						profileImageURL={profileImageURL}
-						firstName={firstName}
-						lastName={lastName}
-						middleIntial={middleIntial}
-						jobTitle={jobTitle}
+						profileImageURL={publisher?.photoURL}
+						displayName={publisher?.displayName}
+						jobTitle={publisher?.jobTitle}
 						description={description}
 						numberOfComments={numberOfComments}
 						numberOfLikes={numberOfLikes}
-						postLiked={postLiked}
-						navigateToUserProfile={() => navigation.push('profile', { uid })}
+						postLiked={0}
+						navigateToUserProfile={() => navigation.push('profile', { uid: publisher.uid })}
 						handleLikePost={() => {}}
 						handleCommentOnPost={() => {}}
 						style={{ marginTop: headerHeight + 20, borderBottomWidth: 0 }}
@@ -71,7 +86,7 @@ const PostDetails = ({ navigation, route }: any) => {
 				<Content>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
-							data={null}
+							data={state.comments}
 							ListFooterComponent={() => {
 								return(
 									<Text 

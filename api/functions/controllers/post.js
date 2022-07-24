@@ -63,7 +63,7 @@ exports.createPost = async (req, res) => {
 }
 
 exports.getPost = async (req, res) => {
-   const postId = req.body.postId;
+   const postId = req.query.postId;
    
    const post = await firestore()
       .collection('posts')
@@ -81,6 +81,7 @@ exports.getPost = async (req, res) => {
          docs.forEach(doc => comments.push(doc.data()))
          return comments
       })
+      .catch(error => console.log(error))
 
    res.send({ post, comments })
 }
@@ -94,7 +95,7 @@ exports.updatePost = async (req, res) => {
       .doc(postId)
       .set({ description }, { merge: true })
    
-   res.send({ postId, updatedText: description })
+   res.send({ postId, description })
 }
 
 exports.deletePost = async (req, res) => {

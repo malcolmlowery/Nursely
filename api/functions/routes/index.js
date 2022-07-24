@@ -9,7 +9,7 @@ const post = require('./post.route');
 const likePost = require('./like-post.route');
 const comment = require('./comment.route');
 
-rootRouter.use('/user', verifyUser, user)
+rootRouter.use('/user', user)
 rootRouter.use('/posts', verifyUser, posts)
 rootRouter.use('/post', verifyUser, post)
 rootRouter.use('/like-post', verifyUser, likePost)

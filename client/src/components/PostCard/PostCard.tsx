@@ -1,33 +1,14 @@
 import styled from 'styled-components/native';
 import { Alert, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-
-interface PostCardI {
-   profileImageURL: string | undefined
-   username: string
-   jobTitle: string | undefined
-   description: string
-   numberOfComments: number | undefined
-   numberOfLikes: number | undefined
-   postLiked: boolean | null
-   navigateToUserProfile: () => void
-   navigateToPostDetails?: () => void
-   navigateToComments?: () => void
-   handleLikePost: () => void
-   handlePostCommentResponse: (_: string) => void
-   handleUpdatePost: (_: string) => void
-   handleDeletePost: (_: string) => void
-   style?: any
-   isPostOwner: boolean,
-   editingPost?: boolean,
-};
+import { Ionicons } from '@expo/vector-icons';
+import { PostCardI } from './postCard.interface';
 
 const screenWidth = Dimensions.get('screen').width;
 
 const PostCard = ({
    profileImageURL,
-   username,
+   displayName,
    jobTitle,
    description,
    numberOfComments,
@@ -56,8 +37,8 @@ const PostCard = ({
                <UserInfo>
                   <ProfileImage source={{ uri: profileImageURL }} />
                   <UserName>
-                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>{username}</Text>
-                     <Text style={{ color: '#8A8A8A', fontWeight: '500', fontSize: 14, marginTop: 1 }}>{jobTitle}</Text>
+                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>{displayName}</Text>
+                     <Text style={{ color: '#8A8A8A', fontWeight: '400', fontSize: 12, marginTop: 2 }}>{jobTitle}</Text>
                   </UserName>
                </UserInfo>
             </Btn>
@@ -233,6 +214,7 @@ const ProfileImage = styled.Image`
 const UserName = styled.View`
    justify-content: center;
    margin-left: 12px;
+   margin-top: 2px;
 `;
 
 const Content = styled.View`

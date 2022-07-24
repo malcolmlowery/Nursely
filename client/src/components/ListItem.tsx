@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import styled from 'styled-components/native';
 
-interface ListItemII {
+interface ListItemI {
    uid: string
    profileImage: string
    username: string
@@ -21,7 +21,7 @@ const ListItem = ({
    numberOfLikes,
    navigateToUserProfile,
    handleLikeResponsed
-   }: ListItemII) => {
+   }: ListItemI) => {
    return(
       <Container>
          <Header>

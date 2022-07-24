@@ -5,7 +5,7 @@ import { useLayoutEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons'; 
 
 // Components
-import PostCard from '../components/PostCard';
+import PostCard from '../components/PostCard/PostCard';
 
 const Profile = ({ navigation }: any) => {
 
