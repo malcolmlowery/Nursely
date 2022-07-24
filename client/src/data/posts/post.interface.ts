@@ -1,9 +1,11 @@
 export interface PostDetailsI {
-   postID: string
+   postId: string
+   commentIdRef: string
+   likesIdRef: string
    publisher: {
       uid: string
-      profileImageURL: string
-      username: string
+      photoURL: string
+      displayName: string
       middleIntial: string | null
       jobTitle: string
    }

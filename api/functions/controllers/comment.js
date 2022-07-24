@@ -1,7 +1,7 @@
-const { functions, firestore } = require('../firebase.modules');
+const { firestore, admin } = require('../firebase.modules');
 
-exports.createComment = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid;
+exports.createComment = async (req, res) => {
+   const uid = res.locals.uid;
    const commentIdRef = req.body.commentIdRef;
    const response = req.body.response;
 
@@ -39,9 +39,11 @@ exports.createComment = functions.https.onRequest(async (req, res) => {
       photoURL: user.photoURL,
       response,
    })
-})
+}
 
-exports.updateComment = functions.https.onRequest(async (req, res) => {
+// Need to add local verification for if the res.locals.uid is
+// the same as the comment uid to allow comment updates
+exports.updateComment = async (req, res) => {
    const commentId = req.body.commentId;
    const responseId = req.body.responseId;
    const response = req.body.response;
@@ -54,9 +56,9 @@ exports.updateComment = functions.https.onRequest(async (req, res) => {
     .set({ response }, { merge: true })
  
     res.send({ message: 'User comment was updated!' })
- })
+ }
 
-exports.deleteComment = functions.https.onRequest(async (req, res) => {
+exports.deleteComment = async (req, res) => {
   const commentId = req.body.commentId;
   const responseId = req.body.responseId;
 
@@ -68,4 +70,4 @@ exports.deleteComment = functions.https.onRequest(async (req, res) => {
    .delete()
 
    res.send({ message: 'User comment was deleted!'})
-})
+}

@@ -46,9 +46,9 @@ export const postsSlice = createSlice({
 
       // Update Post
       builder.addCase(updatePost.fulfilled, (state, action) => {
-         const { postID, description }: any = action.payload
+         const { postId, description }: any = action.payload
          state.posts = state.posts.map(post => {
-            if(post.postID === postID) {
+            if(post.postId === postId) {
                return { ...post, description }
             }
             return post
@@ -61,21 +61,21 @@ export const postsSlice = createSlice({
 
       // Delete Post
       builder.addCase(deletePost.fulfilled, (state, action) => {
-         const { postID }: any = action.payload
-         state.posts = state.posts.filter(post => post.postID !== postID)
+         const { postId }: any = action.payload
+         state.posts = state.posts.filter(post => post.postId !== postId)
       })
 
       // Like Post
       builder.addCase(likePost.fulfilled, (state, action) => {
-         const { postLiked, postID }: any = action.payload
+         const { postLiked, postId }: any = action.payload
          state.posts = state.posts.map(post => {
-            if(post.postID === postID && postLiked === true) {
+            if(post.postId === postId && postLiked === true) {
                return {
                   ...post,
                   postLiked: true,
                   numberOfLikes: post.numberOfLikes + 1
                }
-            } else if(post.postID === postID && postLiked === false) {
+            } else if(post.postId === postId && postLiked === false) {
                return {
                   ...post,
                   postLiked: false,

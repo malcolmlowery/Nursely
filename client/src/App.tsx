@@ -18,6 +18,7 @@ import Profile from './screens/profile';
 import CreatePost from './screens/create-post';
 import Message from './screens/message';
 import Login from './screens/login';
+import SignUp from './screens/signup';
 
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -127,11 +128,8 @@ const App = () => {
 	
 	onAuthStateChanged(auth, async (user) => {
 		if(user) {
-			const token: any = await auth.currentUser?.getIdToken(true)
-			await AsyncStorage.setItem('token', token)
 			setUserAuthenticated(true)
 		} else {
-			await AsyncStorage.removeItem('token')
 			setUserAuthenticated(false)
 		}
 	})
@@ -202,6 +200,7 @@ const App = () => {
 			:
 			<Stack.Navigator screenOptions={{ headerShown: false }}>
 				<Stack.Screen name='login' component={Login} />
+				<Stack.Screen name='sign-up' component={SignUp} />
 			</Stack.Navigator>
 			
 		}

@@ -1,7 +1,7 @@
-const { functions, firestore } = require('../firebase.modules');
+const { firestore } = require('../firebase.modules');
 
-exports.getPosts = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid;
+exports.getPosts = async (req, res) => {
+   const uid = res.locals.uid;
 
    const userLikeIds = await firestore()
       .collection('users')
@@ -31,4 +31,4 @@ exports.getPosts = functions.https.onRequest(async (req, res) => {
    })
 
    res.status(200).send(posts)
-})
+}

@@ -29,7 +29,9 @@ const Newsfeed = ({ navigation }: any) => {
 								data={posts}
 								renderItem={({ item }: any) => {
                            const {
-                              postID,
+                              postId,
+										commentIdRef, 
+										likesIdRef,
                               publisher,
                               description,
                               numberOfComments,
@@ -39,15 +41,15 @@ const Newsfeed = ({ navigation }: any) => {
 
                            const {
                               uid,
-                              profileImageURL,
-                              username,
+                              photoURL,
+                              displayName,
                               jobTitle,
                            } = publisher;
                            
                            return(
                               <PostCard 
-                                 profileImageURL={profileImageURL}
-                                 username={username}
+                                 profileImageURL={photoURL}
+                                 username={displayName}
                                  jobTitle={jobTitle}
                                  description={description}
                                  numberOfComments={numberOfComments}
@@ -55,9 +57,9 @@ const Newsfeed = ({ navigation }: any) => {
                                  postLiked={postLiked}
                                  navigateToUserProfile={() => navigation.push('profile', { uid })}
                                  navigateToPostDetails={() => navigation.push('post-details', {
-                                    postID,
-                                    profileImageURL,
-                                    username,
+                                    postId,
+                                    photoURL,
+                                    displayName,
                                     jobTitle,
                                     description,
                                     numberOfComments,
@@ -65,16 +67,16 @@ const Newsfeed = ({ navigation }: any) => {
                                     postLiked,
                                  })}
 											isPostOwner={true}
-                                 navigateToComments={() => navigation.push('post-details', { postID })}
-                                 handleLikePost={() => dispatch(likePost(postID))}
-                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, postID }))}
-											handleUpdatePost={(updatedDescription) => dispatch(updatePost({ description: updatedDescription, postID }))}
-											handleDeletePost={() => dispatch(deletePost(postID))}
+                                 navigateToComments={() => navigation.push('post-details', { postId })}
+                                 handleLikePost={() => dispatch(likePost(postId))}
+                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, postId }))}
+											handleUpdatePost={(updatedDescription) => dispatch(updatePost({ description: updatedDescription, postId }))}
+											handleDeletePost={() => dispatch(deletePost({ postId, commentIdRef, likesIdRef }))}
                                  style={{ marginBottom: 12 }}
                               />
                            )
                         }}
-								keyExtractor={(item: any) => item.postID}
+								keyExtractor={(item: any) => item.postId}
 								style={{ top: headerHeight, overflow: 'visible' }}
 								contentInset={{ bottom: 70, top: 0 }}
 								refreshing={refreshing}

@@ -1,7 +1,7 @@
-const { functions, firestore, FieldValue } = require('../firebase.modules');
+const { firestore, FieldValue } = require('../firebase.modules');
 
-exports.createPost = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid;
+exports.createPost = async (req, res) => {
+   const uid = res.locals.uid;
    const description = req.body.description;
    const postId = await firestore().collection('posts').doc().id;
    const commentIdRef = await firestore().collection('comments').doc().id;
@@ -46,11 +46,13 @@ exports.createPost = functions.https.onRequest(async (req, res) => {
       })
       
    res.send({
-      postId,
+      postId, 
       commentIdRef,
+      likesIdRef,
       description,
       numberOfComments: 0,
       numberOfLikes: 0,
+      postLiked: false,
       publisher: {
          uid,
          displayName: user.displayName,
@@ -58,11 +60,10 @@ exports.createPost = functions.https.onRequest(async (req, res) => {
          jobTitle: user.occupation.jobTitle
       }
    })
-})
+}
 
-exports.getPost = functions.https.onRequest(async (req, res) => {
+exports.getPost = async (req, res) => {
    const postId = req.body.postId;
-   const commentIdRef = req.body.commentIdRef;
    
    const post = await firestore()
       .collection('posts')
@@ -72,7 +73,7 @@ exports.getPost = functions.https.onRequest(async (req, res) => {
 
    const comments = await firestore()
       .collection('comments')
-      .doc(commentIdRef)
+      .doc(post.commentIdRef)
       .collection('responses')
       .get()
       .then(docs => {
@@ -82,9 +83,9 @@ exports.getPost = functions.https.onRequest(async (req, res) => {
       })
 
    res.send({ post, comments })
-})
+}
 
-exports.updatePost = functions.https.onRequest(async (req, res) => {
+exports.updatePost = async (req, res) => {
    const postId = req.body.postId;
    const description = req.body.description;
 
@@ -94,13 +95,13 @@ exports.updatePost = functions.https.onRequest(async (req, res) => {
       .set({ description }, { merge: true })
    
    res.send({ postId, updatedText: description })
-})
+}
 
-exports.deletePost = functions.https.onRequest(async (req, res) => {
+exports.deletePost = async (req, res) => {
    const postId = req.body.postId;
-   const commentId = req.body.commentId;
-   const likesId = req.body.likesId;
-
+   const commentId = req.body.commentIdRef;
+   const likesId = req.body.likesIdRef;
+   
    await firestore()
       .collection('posts')
       .doc(postId)
@@ -123,12 +124,12 @@ exports.deletePost = functions.https.onRequest(async (req, res) => {
       .doc(likesId)
       .delete()
 
+      console.log({postId})
+   res.send({ postId })
+}
 
-   res.send({ message: 'Post was deleted!'})
-})
-
-exports.likePost = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid
+exports.likePost = async (req, res) => {
+   const uid = res.locals.uid
    const likesIdRef = req.body.likesIdRef
    const postId = req.body.postId
 
@@ -164,4 +165,4 @@ exports.likePost = functions.https.onRequest(async (req, res) => {
       }, { merge: true })
 
    res.send({ postId, postLiked: uidExists === undefined ? true : false })
-})
+}

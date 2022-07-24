@@ -1,18 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { getFunctions, httpsCallableFromURL, auth } from '../../../firebase.config';
 
 export const fetchPosts = createAsyncThunk(
    'posts/fetchPosts',
    async () => {
       const token = await AsyncStorage.getItem('token')
-      return (await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
+      return await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/posts', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
          },
-         method: 'GET'
+         method: 'GET',
       })
-      .then(response => response.json()))
+      .then(response => response.json())
+      .then(data => data)
+      .catch((error) => console.log(error))
    }
 );
 
@@ -50,16 +53,20 @@ export const updatePost = createAsyncThunk(
 
 export const deletePost = createAsyncThunk(
    'posts/deletePost',
-   async (postID: string) => {
-      const token = await AsyncStorage.getItem('token')
-      return (await fetch(`http://localhost:5001/nursely-b7c6d/us-central1/api/posts/post?postID=${postID}`, {
+   async (postData: any) => {
+      const token = await AsyncStorage.getItem('token');
+      const postId = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/post', {
          headers: { 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
          },
          method: 'DELETE',
+         body: JSON.stringify(postData)
       })
-      .then(response => response.json()))
+      .then(response => response.json())
+      .catch(error => console.log(error))
+      
+      return postId
    }
 );
 

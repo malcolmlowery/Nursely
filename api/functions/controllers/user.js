@@ -1,9 +1,10 @@
-const { admin, functions, firestore } = require('../firebase.modules');
+const { admin, firestore } = require('../firebase.modules');
 
-exports.createUser = functions.https.onRequest(async (req, res) => {
+exports.createUser = async (req, res) => {
    const firstName = req.body.firstName;
    const lastName = req.body.lastName;
    const photoURL = req.body.photoURL;
+   const password = req.body.password;
    const email = req.body.email;
    const occupation = {
       jobTitle: req.body.jobTitle,
@@ -11,12 +12,17 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
       hospitalName: req.body.hospitalName
    }
 
+   console.log(email)
+
    const { uid, displayName, emailVerified } = await admin.auth().createUser({
       displayName: `${firstName} ${lastName}`,
       photoURL,
+      password,
       email,
       emailVerified: false,
    })
+
+   const token = await admin.auth().createCustomToken(uid)
    
    await firestore()
       .collection('users')
@@ -32,24 +38,22 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
       })
 
    res.send({
-      uid,
+      token,
       displayName,
       photoURL,
-      email,
-      emailVerified,
       occupation: { ...occupation }
    })
-})
+}
 
-exports.updateUser = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid;
+exports.updateUser = async (req, res) => {
+   const uid = res.locals.uid;
    const displayName = req.body.displayName;
    const photoURL = req.body.photoURL;
    const email = req.body.email;
    const jobTitle = req.body.jobTitle;
    const specializations = req.body.specializations;
    const hospitalName = req.body.hospitalName;
-
+   
    const user = await firestore()
       .collection('users')
       .doc(uid)
@@ -114,10 +118,10 @@ exports.updateUser = functions.https.onRequest(async (req, res) => {
       })
 
    res.send({ message: 'User data updated in all database collection!' })
-})
+}
 
-exports.deleteUser = functions.https.onRequest(async (req, res) => {
-   const uid = req.body.uid;
+exports.deleteUser = async (req, res) => {
+   const uid = res.locals.uid;
 
    await admin.auth().deleteUser(uid)
    await firestore().collection('users').doc(uid).delete()
@@ -128,4 +132,4 @@ exports.deleteUser = functions.https.onRequest(async (req, res) => {
       .then(async (snapshot) => await snapshot.docs.forEach(doc => doc.ref.delete()))
 
    res.send({ message: `User ${uid} was deleted`})
-})
+}

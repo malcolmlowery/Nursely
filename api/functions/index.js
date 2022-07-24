@@ -1,24 +1,10 @@
-const { admin } = require('./firebase.modules');
-const { getPosts } = require('./endpoints/posts');
-const { createUser, updateUser, deleteUser } = require("./endpoints/user");
-const { createComment, updateComment, deleteComment } = require("./endpoints/comments");
-const { 
-   createPost, 
-   getPost, 
-   updatePost, 
-   deletePost, 
-   likePost 
-} = require("./endpoints/post");
+const { admin, functions } = require('./firebase.modules');
+const express = require('express');
+const app = express();
+const rootRouter = require('./routes/index');
+const serviceAccount = require('./fb-certs.json');
 
-admin.initializeApp()
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+app.use('/', rootRouter)
 
-exports.posts = { getPosts }
-exports.user = { createUser, updateUser, deleteUser }
-exports.comments = { createComment, updateComment, deleteComment }
-exports.post = { 
-   createPost, 
-   getPost, 
-   updatePost, 
-   deletePost, 
-   likePost 
-}
+exports.api = functions.https.onRequest(app);

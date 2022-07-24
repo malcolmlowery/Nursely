@@ -1,11 +1,12 @@
 import { initializeApp } from 'firebase/app';
+import { getFunctions, httpsCallableFromURL } from 'firebase/functions';
 import { 
   connectAuthEmulator, 
   getAuth, 
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signInWithCustomToken, 
-  signOut
+  signOut,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -27,7 +28,9 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signInWithCustomToken,
-  signOut
+  signOut,
+  getFunctions,
+  httpsCallableFromURL
 }
 
 export default app;

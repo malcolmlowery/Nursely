@@ -10,10 +10,19 @@ export const createUser = createAsyncThunk(
          firstName: 'Malcolm',
          lastName: 'Lowery',
          email: 'malcolmlowery.developer@gmail.com',
-         password: '123456'
+         password: '123456',
+         photoURL: 'https://avatars.githubusercontent.com/u/100153203?v=4',
+         jobTitle: 'Registered Nurse',
+         specializations: ['Oncology', 'Pediatrics', 'Anesthesiology'],
+         hospitalName: 'Delray Medical Center'
       }
 
-      const { data } = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/users', {
+      const {
+         token,
+         displayName,
+         photoURL,
+         occupation
+      } = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/user', {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -23,13 +32,13 @@ export const createUser = createAsyncThunk(
       })
       .then(response => response.json())
 
-      await signInWithCustomToken(auth, data.userToken)
-         .catch(error => console.log(error))
-
-      await auth.currentUser?.getIdToken(true)
-         .then(async (idToken) => {
-            await AsyncStorage.setItem('token', idToken)
+      await signInWithCustomToken(auth, token)
+         .then(async ({ user }) => {
+            const userToken = await user.getIdToken(true);
+            console.log(userToken)
+            await AsyncStorage.setItem('token', userToken)
          })
+         .catch(error => console.log(error))
    }
 );
 

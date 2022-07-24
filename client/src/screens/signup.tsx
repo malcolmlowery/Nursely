@@ -3,16 +3,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { auth, signInWithEmailAndPassword } from '../../firebase.config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../data/store';
+import { createUser } from '../data/user/user.actions';
 
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
  
-const Login = ({ navigation }) => {
+const SignUp = () => {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-
+   const dispatch = useDispatch<AppDispatch>();
    return(
       <Container>
          <LinearGradient
@@ -27,7 +28,7 @@ const Login = ({ navigation }) => {
          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ alignItems: 'center' }}>
             <Text style={{ color: '#fff', marginBottom: 30, fontSize: 52, fontWeight: '600'}}>Nursely</Text>
             <Content>
-               <Text style={{ color: '#252525', fontSize: 30, fontWeight: '600'}}>Login</Text>
+               <Text style={{ color: '#252525', fontSize: 30, fontWeight: '600'}}>Register</Text>
                <InputGroup style={{ marginTop: 20 }}>
                   <Ionicons name='mail' color='#d8d8d8' size={32} />
                   <TextInput placeholder='email' value={email} onChangeText={(val) => setEmail(val)} />
@@ -42,18 +43,11 @@ const Login = ({ navigation }) => {
                      onChangeText={(val) => setPassword(val)}
                   />
                </InputGroup>
-               <Button style={{ marginTop: 30, padding: 14 }} onPress={() => {
-                  signInWithEmailAndPassword(auth, email, password)
-                  .then(async ({ user }) => {
-                     await user.getIdToken(true)
-                        .then(token => AsyncStorage.setItem('token', token))
-                  })
-                  .catch(error => console.log(error))
-               }}>
+               <Button style={{ marginTop: 30, padding: 14 }} onPress={() => dispatch(createUser())}>
                   <Text style={{ color: '#fff', fontWeight: '600' }}>Submit</Text>
                </Button>
-               <Button onPress={() => navigation.push('sign-up')} style={{ backgroundColor: 'transparent', marginTop: 20, padding: 6 }}>
-                  <Text>Need an account?</Text>
+               <Button style={{ backgroundColor: 'transparent', marginTop: 20, padding: 6 }}>
+                  <Text>Have an account?</Text>
                </Button>
             </Content>
          </KeyboardAvoidingView>
@@ -61,7 +55,7 @@ const Login = ({ navigation }) => {
    )
 };
 
-export default Login;
+export default SignUp;
 
 const Container = styled.View`
    align-items: center;
