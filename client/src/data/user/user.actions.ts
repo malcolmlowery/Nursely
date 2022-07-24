@@ -7,11 +7,11 @@ export const createUser = createAsyncThunk(
    async (userInput) => {
       // Placeholder data until signup screen is created
       const userData = {
-         firstName: 'Malcolm',
-         lastName: 'Lowery',
-         email: 'malcolmlowery.developer@gmail.com',
+         firstName: 'Sarah',
+         lastName: 'Finley',
+         email: 'test@gmail.com',
          password: '123456',
-         photoURL: 'https://avatars.githubusercontent.com/u/100153203?v=4',
+         photoURL: 'https://media.istockphoto.com/photos/portrait-of-female-nurse-using-tablet-at-hospital-picture-id1198224204?k=20&m=1198224204&s=612x612&w=0&h=y7KmFTJZ9JOya_1FQzst4oatxLux5Htr1QEmeVM396s=',
          jobTitle: 'Registered Nurse',
          specializations: ['Oncology', 'Pediatrics', 'Anesthesiology'],
          hospitalName: 'Delray Medical Center'
@@ -22,7 +22,7 @@ export const createUser = createAsyncThunk(
          displayName,
          photoURL,
          occupation
-      } = await fetch('http://localhost:5001/nursely-b7c6d/us-central1/api/user', {
+      } = await fetch('https://us-central1-nursely-b7c6d.cloudfunctions.net/api/user', {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -45,7 +45,7 @@ export const createUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
    'user/login',
    async ({ email, password }: any) => {
-
+      console.log('s')
       await signInWithEmailAndPassword(auth, email, password)
          .then(({ user }) => user)
          .catch(error => console.log(error))
@@ -54,6 +54,7 @@ export const loginUser = createAsyncThunk(
          .then(async (token) => {
             await AsyncStorage.setItem('token', token)
          })
+         .catch(error => console.log(error))
    }
 );
 

@@ -26,5 +26,6 @@ export interface PostStateI {
    loading: 'idle' | 'pending' | 'succeeded' | 'failed'
    post: PostI | object
    comments: CommentI[]
+   posts: PostI[]
    error: string | object | null
 }

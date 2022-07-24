@@ -125,7 +125,6 @@ exports.deletePost = async (req, res) => {
       .doc(likesId)
       .delete()
 
-      console.log({postId})
    res.send({ postId })
 }
 

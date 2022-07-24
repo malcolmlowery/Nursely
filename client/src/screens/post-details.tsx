@@ -11,7 +11,7 @@ import PostCard from '../components/PostCard/PostCard';
 import ListItem from '../components/ListItem';
 
 const PostDetails = ({ navigation, route }: any) => {
-	const state = useSelector((state: RootState) => state.post);
+	const post = useSelector((state: RootState) => state.postSlice.post);
 	const dispatch = useDispatch<AppDispatch>();
 	const { postId	} = route.params;
 
@@ -25,8 +25,9 @@ const PostDetails = ({ navigation, route }: any) => {
 		description,
 		numberOfComments,
 		numberOfLikes,
-		publisher
-	}: PostI = state.post;
+		publisher,
+		postLiked
+	}: PostI = post;
 
 	const renderCommentItem = ({ item }: any) => {
 
@@ -38,20 +39,20 @@ const PostDetails = ({ navigation, route }: any) => {
 			photoURL
 		}: CommentI = item;
 
-		// const {
-		// 	uid,
-		// 	profileImageURL,
-		// 	username,
-		// 	response,
-		// 	reponsedLiked,
-		// 	numberOfLikes,
-		// 	navigateToUserProfile,
-		// 	handleLikeResponsed
-		// } = item;
+		const {
+			uid,
+			profileImageURL,
+			username,
+			response,
+			reponsedLiked,
+			numberOfLikes,
+			navigateToUserProfile,
+			handleLikeResponsed
+		} = item;
 
 		return(
 			<ListItem 
-				// uid={uid}
+				uid={uid}
 				profileImage={photoURL}
 				username={displayName}
 				response={comment}
@@ -76,7 +77,7 @@ const PostDetails = ({ navigation, route }: any) => {
 						description={description}
 						numberOfComments={numberOfComments}
 						numberOfLikes={numberOfLikes}
-						postLiked={0}
+						postLiked={postLiked}
 						navigateToUserProfile={() => navigation.push('profile', { uid: publisher.uid })}
 						handleLikePost={() => {}}
 						handleCommentOnPost={() => {}}
@@ -86,7 +87,7 @@ const PostDetails = ({ navigation, route }: any) => {
 				<Content>
 						<FlatList 
 							showsVerticalScrollIndicator={false}
-							data={state.comments}
+							data={null}
 							ListFooterComponent={() => {
 								return(
 									<Text 

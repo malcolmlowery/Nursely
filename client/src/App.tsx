@@ -128,6 +128,8 @@ const App = () => {
 	
 	onAuthStateChanged(auth, async (user) => {
 		if(user) {
+			const token = await user.getIdToken();
+			await AsyncStorage.setItem('token', token)
 			setUserAuthenticated(true)
 		} else {
 			setUserAuthenticated(false)

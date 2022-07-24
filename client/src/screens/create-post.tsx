@@ -1,11 +1,10 @@
 import styled from 'styled-components/native';
-import { Dimensions, Keyboard } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createPost } from '../data/posts/post.actions';
+import { createPost } from '../data/post/post.actions';
 import { AppDispatch } from '../data/store';
-import { createUser } from '../data/user/user.actions';
 
 interface CreatePostI {
    navigation: any
@@ -17,7 +16,7 @@ const screenWidth = Dimensions.get('screen').width;
 
 const CreatePost = ({ navigation }: CreatePostI) => {
    const [isUploadingPost, setIsUploadingPost] = useState(false);
-   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+   const [textInputFocused, setTextInputFocused] = useState(false);
    const [text, setText] = useState('');
    const dispatch = useDispatch<AppDispatch>();
 
@@ -31,46 +30,48 @@ const CreatePost = ({ navigation }: CreatePostI) => {
          }} 
          />
          <Content>
-            <Card>
-               { isUploadingPost &&
-                  <BlurView tint='light' intensity={15} style={{ 
-                     flex: 1, 
-                     height: 320,
-                     width: screenWidth - 60,
-                     borderRadius: 20,
-                     overflow: 'hidden',
-                     position: 'absolute',
-                     zIndex: 10001
-                  }} 
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={{ top: textInputFocused ? -40 : 0 }}>
+               <Card>
+                  { isUploadingPost &&
+                     <BlurView tint='light' intensity={15} style={{ 
+                        flex: 1, 
+                        height: 320,
+                        width: screenWidth - 60,
+                        borderRadius: 20,
+                        overflow: 'hidden',
+                        position: 'absolute',
+                        zIndex: 10001
+                     }} 
+                     />
+                  }
+                  <Header>
+                     <Text style={{ fontSize: 18, fontWeight: '600' }}>What's on your mind?</Text>
+                  </Header>
+                  <TextInput 
+                     placeholder='Say something...' 
+                     multiline={true} 
+                     maxLength={1000} 
+                     enablesReturnKeyAutomatically={true}
+                     onChangeText={(val) => setText(val)}
+                     onFocus={() => setTextInputFocused(true)}
                   />
-               }
-               <Header>
-                  <Text style={{ fontSize: 18, fontWeight: '600' }}>What's on your mind?</Text>
-               </Header>
-               <TextInput 
-                  placeholder='Say something...' 
-                  multiline={true} 
-                  maxLength={1000} 
-                  enablesReturnKeyAutomatically={true}
-                  onChangeText={(val) => setText(val)}
-                  onBlur={() => {}}
-               />
-               <ActionButtons>
-                  <Button onPress={() => navigation.pop()}>
-                     <Text style={{ color: '#D6493E', fontWeight: '500', fontSize: 16 }}>Cancel</Text>
-                  </Button>
-                  <Button onPress={() => {
-                     setIsUploadingPost(true)
-                     dispatch(createPost(text))
-                     setTimeout(() => {
-                        setIsUploadingPost(false)
-                        navigation.pop()
-                     }, 500)
-                  }}>
-                     <Text style={{ color: '#2c7eea', fontWeight: '500', fontSize: 16 }}>Post</Text>
-                  </Button>
-               </ActionButtons>
-            </Card>
+                  <ActionButtons>
+                     <Button onPress={() => navigation.pop()}>
+                        <Text style={{ color: '#D6493E', fontWeight: '500', fontSize: 16 }}>Cancel</Text>
+                     </Button>
+                     <Button onPress={() => {
+                        setIsUploadingPost(true)
+                        dispatch(createPost(text))
+                        setTimeout(() => {
+                           setIsUploadingPost(false)
+                           navigation.pop()
+                        }, 500)
+                     }}>
+                        <Text style={{ color: '#2c7eea', fontWeight: '500', fontSize: 16 }}>Post</Text>
+                     </Button>
+                  </ActionButtons>
+               </Card>
+            </KeyboardAvoidingView>
          </Content>
       </Container>
    )

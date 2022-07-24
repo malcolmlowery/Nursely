@@ -22,7 +22,7 @@ const PostCard = ({
    handleUpdatePost,
    handleDeletePost,
    style,
-   isPostOwner = true,
+   isPostOwner,
    }: PostCardI) => {
       const [toggleOptions, setToggleOptions] = useState(false);
       const [isEditing, setIsEditing] = useState(false);
@@ -37,19 +37,19 @@ const PostCard = ({
                <UserInfo>
                   <ProfileImage source={{ uri: profileImageURL }} />
                   <UserName>
-                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 14 }}>{displayName}</Text>
-                     <Text style={{ color: '#8A8A8A', fontWeight: '400', fontSize: 12, marginTop: 2 }}>{jobTitle}</Text>
+                     <Text style={{ color: '#131313', fontWeight: '600', fontSize: 16 }}>{displayName}</Text>
+                     <Text style={{ color: '#8A8A8A', fontWeight: '400', fontSize: 14, marginTop: 2 }}>{jobTitle}</Text>
                   </UserName>
                </UserInfo>
             </Btn>
             {  isPostOwner == true && toggleOptions == false &&
-               <Btn onPress={() => setToggleOptions(true)} style={{ top: 8 }}>
-                  <Ionicons name='options' size={20} color='#B9B9B9' />
+               <Btn onPress={() => setToggleOptions(true)} style={{ top: 8, right: 8 }}>
+                  <Ionicons name='options' size={26} color='#B9B9B9' />
                </Btn>
             }
             { isPostOwner == false &&
-               <Btn style={{ top: 8 }}>
-                  <Ionicons name='ios-alert-circle' size={20} color='#B9B9B9' />
+               <Btn style={{ top: 8, right: 9 }}>
+                  <Ionicons name='ios-alert-circle' size={22} color='#B9B9B9' />
                </Btn>
             }
             { toggleOptions == true &&
@@ -72,18 +72,18 @@ const PostCard = ({
                               text: 'OK', onPress: () => handleDeletePost(),
                            }
                         ])
-                     }} style={{ marginRight: 10, width: 42 }}>
+                     }} style={{ fontSize: 15, marginRight: 10, width: 42 }}>
                         <Text style={{ alignSelf: 'center', color: '#D6493E' }}>Delete</Text>
                      </Btn>
                   }
                   <Btn onPress={() => setIsEditing(true)} style={{ width: 40 }}>
-                     <Text style={{ alignSelf: 'center' }}>Edit</Text>
+                     <Text style={{ alignSelf: 'center', fontSize: 15 }}>Edit</Text>
                   </Btn>
                   <Btn onPress={() => {
                      setToggleOptions(false)
                      setIsEditing(false)
                   }} style={{ marginLeft: 8 }}>
-                     <Ionicons name='options' size={20} color='#B9B9B9' />
+                     <Ionicons name='options' size={26} color='#B9B9B9' />
                   </Btn>
                </EditButtonsContainer>
             }
@@ -91,7 +91,7 @@ const PostCard = ({
          <Content>
             { isEditing == false ?
                <Btn onPress={navigateToPostDetails}>
-                  <Text style={{ color: '#272727', fontSize: 14, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
+                  <Text style={{ color: '#272727', fontSize: 16, fontWeight: '400', lineHeight: 20.25 }}>{description}</Text>
                </Btn>
                :
                <TextInput
@@ -161,9 +161,10 @@ const PostCard = ({
                      borderRadius: 6, width: 340,
                      marginRight: 0,
                      marginTop: 4,
-                     alignItems: 'center'
+                     height: 40,
+                     alignItems: 'center',
                   }}>
-                  <Text style={{ color: '#fff', fontSize: 12, fontWeight: '500' }}>Post Response</Text>
+                  <Text style={{ color: '#fff', fontSize: 14, fontWeight: '500' }}>Post Response</Text>
                </CommentBtn>
             </>
          }
@@ -182,7 +183,7 @@ const Container = styled.View`
 `;
 
 const Text = styled.Text`
-   font-size: 13px;
+   font-size: 14px;
 `;
 
 const Spacer = styled.View`

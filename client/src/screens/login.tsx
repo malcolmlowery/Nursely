@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../data/store';
 import { loginUser } from '../data/user/user.actions';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase.config';
 
 const screenHeight = Dimensions.get('screen').height;
 const screenWidth = Dimensions.get('screen').width;
@@ -50,7 +52,7 @@ const Login = ({ navigation }: any) => {
 
                <Button 
                   style={{ marginTop: 30, padding: 14 }} 
-                  onPress={() => dispatch(loginUser({ email, password }))}>
+                  onPress={() => signInWithEmailAndPassword(auth, email, password).catch(error => console.log(error))}>
                   <Text style={{ color: '#fff', fontWeight: '600' }}>Submit</Text>
                </Button>
                

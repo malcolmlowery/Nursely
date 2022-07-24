@@ -10,7 +10,7 @@ export interface PostCardI {
    navigateToPostDetails?: () => void
    navigateToComments?: () => void
    handleLikePost: () => void
-   handlePostCommentResponse: (_: string) => void
+   handlePostCommentResponse: (a: string) => void
    handleUpdatePost: (_: string) => void
    handleDeletePost: (_: string) => void
    style?: any

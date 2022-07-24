@@ -4,13 +4,14 @@ import { HeaderHeightContext } from '@react-navigation/elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../data/store';
 import { Ionicons } from '@expo/vector-icons';
-import { deletePost, fetchPosts, likePost, postCommentResponse, updatePost } from '../data/posts/post.actions'
+import { auth } from '../../firebase.config';
+import { fetchPosts, updatePost, deletePost, likePost, createNewComment } from '../data/post/post.actions';
 
 // Components
 import PostCard from '../components/PostCard/PostCard';
 
 const Newsfeed = ({ navigation }: any) => {
-	const posts = useSelector((state: RootState) => state.posts.posts);
+	const posts = useSelector((state: RootState) => state.postSlice.posts);
 	const dispatch = useDispatch<AppDispatch>();
 	const [refreshing, setRefreshing] = useState(false);
 
@@ -66,10 +67,10 @@ const Newsfeed = ({ navigation }: any) => {
                                     numberOfLikes,
                                     postLiked,
                                  })}
-											isPostOwner={true}
+											isPostOwner={auth.currentUser?.uid === uid ? true : false}
                                  navigateToComments={() => navigation.push('post-details', { postId })}
                                  handleLikePost={() => dispatch(likePost({ postId, likesIdRef }))}
-                                 handlePostCommentResponse={(comment) => dispatch(postCommentResponse({ comment, commentIdRef }))}
+                                 handlePostCommentResponse={(comment) => dispatch(createNewComment({ comment, commentIdRef }))}
 											handleUpdatePost={(updatedDescription) => dispatch(updatePost({ description: updatedDescription, postId }))}
 											handleDeletePost={() => dispatch(deletePost({ postId, commentIdRef, likesIdRef }))}
                                  style={{ marginBottom: 12 }}
